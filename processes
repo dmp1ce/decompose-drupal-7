@@ -1,0 +1,47 @@
+DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up')
+
+_decompose-process-env() {
+  echo "$PROJECT_ENVIRONMENT"
+  echo "PRODUCTION: $PRODUCTION"
+  echo "DEVELOPMENT: $DEVELOPMENT"
+}
+_decompose-process-env_help() {
+  echo "  Show environment setting"
+}
+
+_decompose-process-explore() {
+  echo "Entering PHP container clone..."
+  echo "docker-compose -f $dc_config_file run --rm php /bin/bash"
+}
+_decompose-process-explore_help() {
+  echo "  Explore!"
+}
+
+_decompose-process-dc() {
+  echo 'docker-compose -f $dc_config_file "$@"'
+}
+_decompose-process-dc_help() {
+  echo "  Run docker compose in the current environment ($PROJECT_ENVIRONMENT)"
+}
+
+_decompose-process-build() {
+  # TODO: Generate SSL certificates if they don't already exist.
+  #echo 'TODO: Generate SSL certs for testing'
+  # TODO: Rebuild source for production
+  # TODO: Build remaining docker-compose containers
+
+  decompose-process-templates 
+  docker-compose build
+}
+_decompose-process-build_help() {
+  echo "  Build the project"
+}
+
+_decompose-process-up() {
+  docker-compose up -d
+}
+_decompose-process-up_help() {
+  echo "  Start project locally"
+}
+
+# vim:syntax=sh

@@ -1,0 +1,18 @@
+PROJECT_ENVIRONMENT="development"
+PROJECT_PRODUCTION_SERVER="dev"
+
+PROJECT_NGINX_VIRTUAL_HOST_DEV="mysite.local"
+PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
+
+ELEMENTS_POST_PROCESS=( 'post' )
+
+_decompose-elements-post() {
+  if [ "$PROJECT_ENVIRONMENT" == "production" ]; then
+    export PRODUCTION=true; unset DEVELOPMENT
+    export PROJECT_NGINX_VIRTUAL_HOST=$PROJECT_NGINX_VIRTUAL_HOST_PROD
+  else
+    export DEVELOPMENT=true; unset PRODUCTION
+    export PROJECT_NGINX_VIRTUAL_HOST=$PROJECT_NGINX_VIRTUAL_HOST_DEV
+  fi
+}
+# vim:syntax=sh
