@@ -1,4 +1,5 @@
-DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up')
+DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
+  'generate_self_signed_certs' )
 
 _decompose-process-env() {
   echo "$PROJECT_ENVIRONMENT"
@@ -42,6 +43,28 @@ _decompose-process-up() {
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
+}
+
+_decompose-process-start_nginx_proxy() {
+  local nginx_proxy_id=$(docker ps --format "{{.ID}} {{.Image}}" | grep "jwilder/nginx-proxy" | cut -d " " -f1)
+  if [ -n "$nginx_proxy_id" ]; then
+    echo "Closing currently running proxy: $nginx_proxy_id"
+    docker stop "$nginx_proxy_id"
+  fi
+  # TODO: Also search for 'nginx-proxy' label
+  docker run --label "nginx_proxy" -d -p 80:80 -p 443:443 -e DEFAULT_HOST="$PROJECT_NGINX_DEFAULT_HOST"  -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+}
+_decompose-process-start_nginx_proxy_help() {
+  echo "  Start nginx-proxy which can host multiple sites"
+}
+
+_decompose-process-generate_self_signed_certs() {
+  local project_root; _decompose-project-root project_root
+  mkdir $project_root/certs
+  openssl req -nodes -x509 -newkey rsa:4096 -keyout $project_root/certs/server.key -out $project_root/certs/server.crt -days 356
+}
+_decompose-process-generate_self_signed_certs_help() {
+  echo "  Generate self signed tls certifications"
 }
 
 # vim:syntax=sh
