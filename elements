@@ -4,6 +4,8 @@ PROJECT_PRODUCTION_SERVER="dev"
 PROJECT_NGINX_VIRTUAL_HOST_DEV="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
 
+PROJECT_PHP_VERSION="fpm"
+
 ELEMENTS_POST_PROCESS=( 'post' )
 
 _decompose-elements-post() {
