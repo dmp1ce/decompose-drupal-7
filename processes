@@ -1,5 +1,5 @@
 DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
-  'generate_self_signed_certs' )
+  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_uploads')
 
 _decompose-process-env() {
   echo "$PROJECT_ENVIRONMENT"
@@ -16,6 +16,17 @@ _decompose-process-explore() {
 }
 _decompose-process-explore_help() {
   echo "  Explore!"
+}
+
+_decompose-process-explore_db() {
+  # Get the name of the database container
+  db_container_name=$(docker-compose ps | grep _db_ | cut -d' ' -f1)
+
+  # Enter mysql
+  docker exec -it $db_container_name bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app"
+}
+_decompose-process-explore_db_help() {
+  echo "  Explore database"
 }
 
 _decompose-process-dc() {
@@ -65,6 +76,48 @@ _decompose-process-generate_self_signed_certs() {
 }
 _decompose-process-generate_self_signed_certs_help() {
   echo "  Generate self signed tls certifications"
+}
+
+_decompose-process-import_db() {
+  # Verify the the first parameter is a file
+  local sql_file=$1
+  if [ ! -e "$sql_file" ]; then
+    echo "File '$sql_file' does not exist"
+    exit 1
+  fi
+
+  # Get the name of the database container
+  db_container_name=$(docker-compose ps | grep _db_ | cut -d' ' -f1)
+
+  # Copy file to container /tmp
+  docker cp $sql_file $db_container_name:/tmp
+
+  # Import file
+  docker exec $db_container_name bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
+
+  # Delete /tmp file
+  docker exec $db_container_name rm /tmp/$sql_file
+}
+_decompose-process-import_db_help() {
+  echo "  Import DB passed in as a parameter 1"
+}
+
+_decompose-process-import_uploads() {
+  # Verify the the first parameter is a file
+  local directory=$1
+  if [ ! -d "$directory" ]; then
+    echo "Directory '$directory' does not exist"
+    exit 1
+  fi
+
+  # Get the name of the database container
+  php_container_name=$(docker-compose ps | grep _php_ | cut -d' ' -f1)
+
+  # Copy file to container /tmp
+  docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
+}
+_decompose-process-import_uploads_help() {
+  echo "  Copies uploads to the php container"
 }
 
 # vim:syntax=sh
