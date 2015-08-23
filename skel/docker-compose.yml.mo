@@ -3,6 +3,7 @@ php:
   command: /opt/start_php_fpm.sh
   volumes_from:
     - source
+    - data
   links:
     - db
 nginx:
@@ -12,6 +13,7 @@ nginx:
   command: /start_nginx.sh
   volumes_from:
     - source
+    - data
   environment:
     - VIRTUAL_HOST={{PROJECT_NGINX_VIRTUAL_HOST_DEV}}
 db:
@@ -26,6 +28,9 @@ source:
   build: containers/source/.
   volumes:
     - {{SOURCE_VOLUME2}}
+  command: "true"
+data:
+  build: containers/data/.
   command: "true"
 
 # vim:syntax=yaml
