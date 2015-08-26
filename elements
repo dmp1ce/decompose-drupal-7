@@ -6,6 +6,7 @@ PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
 
 PROJECT_PHP_VERSION="fpm"
 
+PROJECT_IGNORE_BUILD=( "*/LC_MESSAGES/*" )
 ELEMENTS_POST_PROCESS=( 'post' )
 
 _decompose-elements-post() {
