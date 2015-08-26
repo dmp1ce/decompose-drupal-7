@@ -1,6 +1,5 @@
 php:
   build: containers/php/.
-  command: /opt/start_php_fpm.sh
   volumes_from:
     - source
     - data
@@ -10,7 +9,6 @@ nginx:
   build: containers/nginx/.
   links:
     - php
-  command: /start_nginx.sh
   volumes_from:
     - source
     - data

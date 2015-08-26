@@ -1,0 +1,2 @@
+nginx: ./start_nginx
+watch: ./watch_and_reload

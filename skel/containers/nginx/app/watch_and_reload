@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Allow nginx time to start up normally
+sleep 10;
+
+last_php_ip=$(getent hosts php | awk '{ print $1 }')
+
+# Infinite loop to check if nginx.conf needs regenerating
+while true; do
+  current_php_ip=$(getent hosts php | awk '{ print $1 }')
+  # Check to see if environment variables have changed
+  if [ "$last_php_ip" != "$current_php_ip" ]; then
+    echo "PHP IP change from '$last_php_ip' to '$current_php_ip'.  \
+Reloading nginx."
+    last_php_ip="$current_php_ip"
+    # Reload nginx
+    nginx -s reload
+  fi
+  sleep 2
+done
