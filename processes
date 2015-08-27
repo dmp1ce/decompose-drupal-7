@@ -1,5 +1,6 @@
 DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
-  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_uploads')
+  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_uploads'
+  'import_cache' 'project-root' )
 
 _decompose-process-env() {
   echo "$PROJECT_ENVIRONMENT"
@@ -113,11 +114,36 @@ _decompose-process-import_uploads() {
   # Get the name of the database container
   php_container_name=$(docker-compose ps | grep _php_ | cut -d' ' -f1)
 
-  # Copy file to container /tmp
+  # Copy directory to container
   docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
 }
 _decompose-process-import_uploads_help() {
-  echo "  Copies uploads to the php container"
+  echo "  Copies 'uploads' directory to the php container"
+}
+
+_decompose-process-import_cache() {
+  # Verify the the first parameter is a file
+  local directory=$1
+  if [ ! -d "$directory" ]; then
+    echo "Directory '$directory' does not exist"
+    exit 1
+  fi
+
+  # Get the name of the database container
+  php_container_name=$(docker-compose ps | grep _php_ | cut -d' ' -f1)
+
+  # Copy directory to container /tmp
+  docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/cache
+}
+_decompose-process-import_cache_help() {
+  echo "  Copies 'cache' directory to the php container"
+}
+
+_decompose-process-project-root() {
+  local project_root; _decompose-project-root project_root; echo $project_root
+}
+_decompose-process-project-root_help() {
+  echo "  Print project root directory"
 }
 
 # vim:syntax=sh
