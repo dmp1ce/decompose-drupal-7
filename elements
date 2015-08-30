@@ -1,12 +1,22 @@
+# Development environment setting ('development' or 'production')
 PROJECT_ENVIRONMENT="development"
+
+# Docker machine production server
 PROJECT_PRODUCTION_SERVER="dev"
 
+# Virtual host settings
 PROJECT_NGINX_VIRTUAL_HOST_DEV="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
 
+# Docker PHP version
 PROJECT_PHP_VERSION="fpm"
 
+# Build ignores
 PROJECT_IGNORE_BUILD=( "*/LC_MESSAGES/*" )
+
+# Backup settings
+PROJECT_BACKUP_GPG_KEY_DEV="disabled"
+PROJECT_BACKUP_TARGET_DEV="file:///home/duply/backup"
 
 ELEMENTS_POST_PROCESS=( 'post' )
 
@@ -14,9 +24,13 @@ _decompose-elements-post() {
   if [ "$PROJECT_ENVIRONMENT" == "production" ]; then
     export PRODUCTION=true; unset DEVELOPMENT
     export PROJECT_NGINX_VIRTUAL_HOST=$PROJECT_NGINX_VIRTUAL_HOST_PROD
+    export PROJECT_BACKUP_GPG_KEY=$PROJECT_BACKUP_GPG_KEY_PROD
+    export PROJECT_BACKUP_TARGET=$PROJECT_BACKUP_TARGET_PROD
   else
     export DEVELOPMENT=true; unset PRODUCTION
     export PROJECT_NGINX_VIRTUAL_HOST=$PROJECT_NGINX_VIRTUAL_HOST_DEV
+    export PROJECT_BACKUP_GPG_KEY=$PROJECT_BACKUP_GPG_KEY_DEV
+    export PROJECT_BACKUP_TARGET=$PROJECT_BACKUP_TARGET_DEV
   fi
 }
 # vim:syntax=sh

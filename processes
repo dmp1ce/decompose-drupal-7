@@ -1,6 +1,6 @@
 DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
   'generate_self_signed_certs' 'import_db' 'explore_db' 'import_uploads'
-  'import_cache' 'project-root' )
+  'import_cache' 'project-root' 'deploy' 'backup_config' )
 
 _decompose-process-env() {
   echo "$PROJECT_ENVIRONMENT"
@@ -145,5 +145,57 @@ _decompose-process-project-root() {
 _decompose-process-project-root_help() {
   echo "  Print project root directory"
 }
+
+_decompose-process-deploy() {
+  echo "Starting Deploy..."
+  # Put in production mode
+  export PROJECT_ENVIRONMENT="production"; decompose-post-process-elements
+
+  # Setup docker-machine
+  echo "Configuring docker-machine..."
+  eval "$(docker-machine env $PROJECT_PRODUCTION_SERVER)"
+
+  # Build
+  echo "Building..."
+  decompose-process-templates
+  docker-compose rm -f source
+  docker-compose build
+
+  # Deploy to production
+  echo "Starting containers on remote server. This might take awhile..."
+  docker-compose up -d --force-recreate
+
+  # Start nginx proxy if it isn't started already
+  # TODO: Check to see if it isn't running already
+  # OR make a more generic function to start this in DEV and PROD
+  docker run --restart=always --label "nginx_proxy" -d -p 80:80 -p 443:443 -e DEFAULT_HOST="$PROJECT_NGINX_DEFAULT_HOST"  -e DOCKER_HOST=tcp://0.0.0.0:2376 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+}
+_decompose-process-deploy_help() {
+  echo "  Deploy to production."
+}
+
+_decompose-process-backup_config() {
+  echo "Backing up config..."
+  local project_root; _decompose-project-root project_root
+
+  local string_time=$(date +%s)
+  local config_name=$PROJECT_NGINX_VIRTUAL_HOST_PROD
+  local asc_files=$(cd "$project_root";\
+    echo ./containers/backup/.duply/site_data/*.asc)
+
+  mkdir -p "$project_root"/backup_config
+  tar -C "$project_root" \
+    -cvzf "$project_root"/backup_config/$config_name-config-$string_time".tar.gz" \
+    --exclude="*.git" \
+    ./.decompose \
+    ./containers/backup/.ssh \
+    $asc_files
+}
+_decompose-process-backup_config_help() {
+  local project_root; _decompose-project-root project_root
+  echo "  Creates backup file of the current configuration for safe keeping"
+  echo "  File is copied to '$project_root/backup_config' directory"
+}
+
 
 # vim:syntax=sh

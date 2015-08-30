@@ -5,6 +5,9 @@ php:
     - data
   links:
     - db
+{{#PRODUCTION}}
+  restart: always
+{{/PRODUCTION}}
 nginx:
   build: containers/nginx/.
   links:
@@ -13,7 +16,10 @@ nginx:
     - source
     - data
   environment:
-    - VIRTUAL_HOST={{PROJECT_NGINX_VIRTUAL_HOST_DEV}}
+    - VIRTUAL_HOST={{PROJECT_NGINX_VIRTUAL_HOST}}
+{{#PRODUCTION}}
+  restart: always
+{{/PRODUCTION}}
 db:
   image: mariadb
   environment:
@@ -21,14 +27,31 @@ db:
     MYSQL_USER: app_user
     MYSQL_PASSWORD: password
     MYSQL_DATABASE: app
+{{#PRODUCTION}}
+  restart: always
+{{/PRODUCTION}}
 # Data containers
 source:
   build: containers/source/.
   volumes:
-    - {{SOURCE_VOLUME2}}
+    - {{#DEVELOPMENT}}{{SOURCE_VOLUME_HOST}}:{{/DEVELOPMENT}}{{SOURCE_VOLUME_CONTAINER}}
   command: "true"
 data:
   build: containers/data/.
   command: "true"
+# Backup
+backup:
+  build: containers/backup/.
+  command: "/home/duply/backup_service"
+  volumes_from:
+    - data{{#DEVELOPMENT}}
+    - backup_data{{/DEVELOPMENT}}
+  links:
+    - db
+{{#DEVELOPMENT}}
+backup_data:
+  build: containers/backup_data/.
+  command: "true"
+{{/DEVELOPMENT}}
 
 # vim:syntax=yaml

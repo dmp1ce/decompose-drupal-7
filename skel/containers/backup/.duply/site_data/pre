@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Export mysql database
+mysqldump -u app_user -ppassword -d app -h db | gzip > /srv/http/sql_backup/app.sql.gz
