@@ -66,7 +66,7 @@ _decompose-process-start_nginx_proxy() {
     return 0
   fi
   # TODO: Also search for 'nginx-proxy' label
-  docker run --label "nginx_proxy" -d -p 80:80 -p 443:443 -e DEFAULT_HOST="$PROJECT_NGINX_DEFAULT_HOST" -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+  docker run --label "nginx_proxy" -d -p 80:80 -p 443:443 --restart="always" -e DEFAULT_HOST="$PROJECT_NGINX_DEFAULT_HOST" -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
 }
 _decompose-process-start_nginx_proxy_help() {
   echo "  Start nginx-proxy which can host multiple sites"
