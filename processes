@@ -102,16 +102,16 @@ _decompose-process-import_db() {
   fi
 
   # Get the name of the database container
-  db_container_name=$(docker-compose ps | grep _db_ | cut -d' ' -f1)
+  db_container_id=$(docker-compose ps -q db)
 
   # Copy file to container /tmp
-  docker cp $sql_file $db_container_name:/tmp
+  docker cp $sql_file $db_container_id:/tmp
 
   # Import file
-  docker exec $db_container_name bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
+  docker exec $db_container_id bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
 
   # Delete /tmp file
-  docker exec $db_container_name rm /tmp/$sql_file
+  docker exec $db_container_id rm /tmp/$sql_file
 }
 _decompose-process-import_db_help() {
   echo "  Import DB passed in as a parameter 1"
