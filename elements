@@ -1,12 +1,15 @@
 # Development environment setting ('development' or 'production')
 PROJECT_ENVIRONMENT="development"
 
-# Docker machine production server
-PROJECT_PRODUCTION_SERVER="dev"
-
 # Virtual host settings
 PROJECT_NGINX_VIRTUAL_HOST_DEV="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
+
+# Source paths
+PROJECT_SOURCE_PATH="source"
+PROJECT_SOURCE_HOST_PATH="./containers/source/"$PROJECT_SOURCE_PATH
+PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
+
 
 # Docker PHP version
 PROJECT_PHP_VERSION="fpm"
