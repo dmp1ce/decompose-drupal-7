@@ -1,7 +1,7 @@
 DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
   'stop_nginx_proxy'
-  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_uploads'
-  'import_cache' 'project-root' 'deploy' 'backup_config' )
+  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_files'
+  'project-root' 'backup_config' )
 
 _decompose-process-env() {
   echo "$PROJECT_ENVIRONMENT"
@@ -95,62 +95,46 @@ _decompose-process-generate_self_signed_certs_help() {
 
 _decompose-process-import_db() {
   # Verify the the first parameter is a file
-  local sql_file=$1
-  if [ ! -e "$sql_file" ]; then
-    echo "File '$sql_file' does not exist"
-    exit 1
-  fi
+  echo "TODO!!"
+  #local sql_file=$1
+  #if [ ! -e "$sql_file" ]; then
+  #  echo "File '$sql_file' does not exist"
+  #  exit 1
+  #fi
 
-  # Get the name of the database container
-  db_container_id=$(docker-compose ps -q db)
+  ## Get the name of the database container
+  #db_container_id=$(docker-compose ps -q db)
 
-  # Copy file to container /tmp
-  docker cp $sql_file $db_container_id:/tmp
+  ## Copy file to container /tmp
+  #docker cp $sql_file $db_container_id:/tmp
 
-  # Import file
-  docker exec $db_container_id bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
+  ## Import file
+  #docker exec $db_container_id bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
 
-  # Delete /tmp file
-  docker exec $db_container_id rm /tmp/$sql_file
+  ## Delete /tmp file
+  #docker exec $db_container_id rm /tmp/$sql_file
 }
 _decompose-process-import_db_help() {
-  echo "  Import DB passed in as a parameter 1"
+  echo "  TODO: Import DB passed in as a parameter 1"
 }
 
-_decompose-process-import_uploads() {
+_decompose-process-import_files() {
   # Verify the the first parameter is a file
-  local directory=$1
-  if [ ! -d "$directory" ]; then
-    echo "Directory '$directory' does not exist"
-    exit 1
-  fi
+  echo "TODO!!"
+  #local directory=$1
+  #if [ ! -d "$directory" ]; then
+  #  echo "Directory '$directory' does not exist"
+  #  exit 1
+  #fi
 
-  # Get the name of the database container
-  php_container_name=$(docker-compose ps -q php)
+  ## Get the name of the database container
+  #php_container_name=$(docker-compose ps -q php)
 
-  # Copy directory to container
-  docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
+  ## Copy directory to container
+  #docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
 }
 _decompose-process-import_uploads_help() {
-  echo "  Copies 'uploads' directory to the php container"
-}
-
-_decompose-process-import_cache() {
-  # Verify the the first parameter is a file
-  local directory=$1
-  if [ ! -d "$directory" ]; then
-    echo "Directory '$directory' does not exist"
-    exit 1
-  fi
-
-  # Get the name of the database container
-  php_container_name=$(docker-compose ps -q php)
-
-  # Copy directory to container /tmp
-  docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/cache
-}
-_decompose-process-import_cache_help() {
-  echo "  Copies 'cache' directory to the php container"
+  echo "  TODO: Copies 'files' directory to the php container"
 }
 
 _decompose-process-project-root() {
@@ -160,54 +144,27 @@ _decompose-process-project-root_help() {
   echo "  Print project root directory"
 }
 
-_decompose-process-deploy() {
-  echo "Starting Deploy..."
-  # Put in production mode
-  export PROJECT_ENVIRONMENT="production"; decompose-post-process-elements
-
-  # Setup docker-machine
-  echo "Configuring docker-machine..."
-  eval "$(docker-machine env $PROJECT_PRODUCTION_SERVER)"
-
-  # Build
-  echo "Building..."
-  decompose-process-templates
-  docker-compose rm -f source
-  docker-compose build
-
-  # Deploy to production
-  echo "Starting containers on remote server. This might take awhile..."
-  docker-compose up -d --force-recreate
-
-  # Start nginx proxy if it isn't started already
-  # TODO: Check to see if it isn't running already
-  # OR make a more generic function to start this in DEV and PROD
-  _decompose-process-start_nginx_proxy
-}
-_decompose-process-deploy_help() {
-  echo "  Deploy to production."
-}
-
 _decompose-process-backup_config() {
-  echo "Backing up config..."
-  local project_root; _decompose-project-root project_root
+  echo "TODO!!"
+  #echo "Backing up config..."
+  #local project_root; _decompose-project-root project_root
 
-  local string_time=$(date +%s)
-  local config_name=$PROJECT_NGINX_VIRTUAL_HOST_PROD
-  local asc_files=$(cd "$project_root";\
-    echo ./containers/backup/.duply/site_data/*.asc)
+  #local string_time=$(date +%s)
+  #local config_name=$PROJECT_NGINX_VIRTUAL_HOST_PROD
+  #local asc_files=$(cd "$project_root";\
+  #  echo ./containers/backup/.duply/site_data/*.asc)
 
-  mkdir -p "$project_root"/backup_config
-  tar -C "$project_root" \
-    -cvzf "$project_root"/backup_config/$config_name-config-$string_time".tar.gz" \
-    --exclude="*.git" \
-    ./.decompose \
-    ./containers/backup/.ssh \
-    $asc_files
+  #mkdir -p "$project_root"/backup_config
+  #tar -C "$project_root" \
+  #  -cvzf "$project_root"/backup_config/$config_name-config-$string_time".tar.gz" \
+  #  --exclude="*.git" \
+  #  ./.decompose \
+  #  ./containers/backup/.ssh \
+  #  $asc_files
 }
 _decompose-process-backup_config_help() {
   local project_root; _decompose-project-root project_root
-  echo "  Creates backup file of the current configuration for safe keeping"
+  echo "  TODO: Creates backup file of the current configuration for safe keeping"
   echo "  File is copied to '$project_root/backup_config' directory"
 }
 
