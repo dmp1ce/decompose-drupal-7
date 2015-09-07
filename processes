@@ -1,16 +1,19 @@
-DECOMPOSE_PROCESSES=( 'env' 'explore' 'dc' 'build' 'up' 'start_nginx_proxy'
-  'stop_nginx_proxy'
-  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_files'
-  'project-root' 'backup_config' )
+# Print the project root
+_decompose-process-project-root() {
+  local project_root; _decompose-project-root project_root; echo $project_root
+}
+_decompose-process-project-root_help() {
+  echo "  Print project root directory"
+}
 
-_decompose-process-env() {
-  echo "$PROJECT_ENVIRONMENT"
-  echo "PRODUCTION: $PRODUCTION"
-  echo "DEVELOPMENT: $DEVELOPMENT"
-}
-_decompose-process-env_help() {
-  echo "  Show environment setting"
-}
+# Include common processes
+source $(_decompose-process-project-root)/.decompose/environment/lib/web/processes
+
+# Declare processes
+DECOMPOSE_PROCESSES=( 'explore' 'dc' 'build' 'up'
+  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_files'
+  'project-root' 'backup_config'
+  "${DECOMPOSE_WEB_PROCESSES[@]}" )
 
 _decompose-process-explore() {
   echo "Entering PHP container clone..."
@@ -56,32 +59,6 @@ _decompose-process-up() {
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
-}
-
-_decompose-process-start_nginx_proxy() {
-  local nginx_proxy_id=$(docker ps --format "{{.ID}} {{.Image}}" | grep "jwilder/nginx-proxy" | cut -d " " -f1)
-  if [ -n "$nginx_proxy_id" ]; then
-    echo "nginx-proxy ($nginx_proxy_id) is already running"
-    echo "Try stoping nginx-proxy first with 'decompose stop_nginx_proxy'"
-    return 0
-  fi
-  # TODO: Also search for 'nginx-proxy' label
-  docker run --label "nginx_proxy" -d -p 80:80 -p 443:443 --restart="always" -e DEFAULT_HOST="$PROJECT_NGINX_DEFAULT_HOST" -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
-}
-_decompose-process-start_nginx_proxy_help() {
-  echo "  Start nginx-proxy which can host multiple sites"
-}
-
-_decompose-process-stop_nginx_proxy() {
-  local nginx_proxy_id=$(docker ps --format "{{.ID}} {{.Image}}" | grep "jwilder/nginx-proxy" | cut -d " " -f1)
-  if [ -n "$nginx_proxy_id" ]; then
-    echo "Closing currently running proxy: $nginx_proxy_id"
-    docker stop "$nginx_proxy_id"
-  fi
-  # TODO: Also search for 'nginx-proxy' label
-}
-_decompose-process-stop_nginx_proxy_help() {
-  echo "  Stop nginx-proxy"
 }
 
 _decompose-process-generate_self_signed_certs() {
@@ -137,12 +114,7 @@ _decompose-process-import_uploads_help() {
   echo "  TODO: Copies 'files' directory to the php container"
 }
 
-_decompose-process-project-root() {
-  local project_root; _decompose-project-root project_root; echo $project_root
-}
-_decompose-process-project-root_help() {
-  echo "  Print project root directory"
-}
+
 
 _decompose-process-backup_config() {
   echo "TODO!!"

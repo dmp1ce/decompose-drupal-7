@@ -1,0 +1,3 @@
+[submodule "lib/web"]
+	path = lib/web
+	url = git@github.com:dmp1ce/decompose-web-common.git
