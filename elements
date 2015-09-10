@@ -1,49 +1,6 @@
-# Development environment setting ('development' or 'production')
-PROJECT_ENVIRONMENT="development"
+# Include common elements
+source $(_decompose-project-root)/.decompose/environment/lib/web/elements
 
-# Virtual host settings
-PROJECT_NGINX_VIRTUAL_HOST_DEV="mysite.local"
-PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
+ELEMENTS_POST_PROCESS=( "${ELEMENTS_WEB_POST_PROCESS[@]}" )
 
-# Source paths
-PROJECT_SOURCE_PATH="source"
-PROJECT_SOURCE_HOST_PATH="./containers/source/"$PROJECT_SOURCE_PATH
-PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
-
-# Mail SMTP Service
-PROJECT_SMTP_HOST=""
-PROJECT_SMTP_USER=""
-PROJECT_SMTP_PASSWORD=""
-PROJECT_SENDMAIL_PATH_DEV="cat >> /tmp/mail.out"
-PROJECT_SENDMAIL_PATH_PROD="/usr/bin/msmtp -C /etc/msmtp_php -t"
-
-# Docker PHP version
-PROJECT_PHP_VERSION="fpm"
-
-# Build ignores
-# PROJECT_IGNORE_BUILD=( "*/LC_MESSAGES/*" )
-
-# Backup settings
-PROJECT_BACKUP_GPG_KEY_DEV="disabled"
-PROJECT_BACKUP_TARGET_DEV="file:///home/duply/backup"
-
-ELEMENTS_POST_PROCESS=( 'post' )
-
-_decompose-elements-post() {
-  if [ "$PROJECT_ENVIRONMENT" == "production" ]; then
-    export PRODUCTION=true; unset DEVELOPMENT
-    export PROJECT_NGINX_VIRTUAL_HOST="$PROJECT_NGINX_VIRTUAL_HOST_PROD,www.$PROJECT_NGINX_VIRTUAL_HOST_PROD"
-    export PROJECT_NGINX_SERVER_NAME="$PROJECT_NGINX_VIRTUAL_HOST_PROD"
-    export PROJECT_BACKUP_GPG_KEY=$PROJECT_BACKUP_GPG_KEY_PROD
-    export PROJECT_BACKUP_TARGET=$PROJECT_BACKUP_TARGET_PROD
-    export PROJECT_SENDMAIL_PATH=$PROJECT_SENDMAIL_PATH_PROD
-  else
-    export DEVELOPMENT=true; unset PRODUCTION
-    export PROJECT_NGINX_VIRTUAL_HOST="$PROJECT_NGINX_VIRTUAL_HOST_DEV,www.$PROJECT_NGINX_VIRTUAL_HOST_DEV"
-    export PROJECT_NGINX_SERVER_NAME="$PROJECT_NGINX_VIRTUAL_HOST_DEV"
-    export PROJECT_BACKUP_GPG_KEY=$PROJECT_BACKUP_GPG_KEY_DEV
-    export PROJECT_BACKUP_TARGET=$PROJECT_BACKUP_TARGET_DEV
-    export PROJECT_SENDMAIL_PATH=$PROJECT_SENDMAIL_PATH_DEV
-  fi
-}
 # vim:syntax=sh

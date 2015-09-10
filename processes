@@ -1,27 +1,11 @@
-# Print the project root
-_decompose-process-project-root() {
-  local project_root; _decompose-project-root project_root; echo $project_root
-}
-_decompose-process-project-root_help() {
-  echo "  Print project root directory"
-}
-
 # Include common processes
-source $(_decompose-process-project-root)/.decompose/environment/lib/web/processes
+source $(_decompose-project-root)/.decompose/environment/lib/web/processes
+source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 
 # Declare processes
-DECOMPOSE_PROCESSES=( 'explore' 'dc' 'build' 'up'
-  'generate_self_signed_certs' 'import_db' 'explore_db' 'import_files'
+DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'project-root' 'backup_config'
   "${DECOMPOSE_WEB_PROCESSES[@]}" )
-
-_decompose-process-explore() {
-  echo "Entering PHP container clone..."
-  echo "docker-compose -f $dc_config_file run --rm php /bin/bash"
-}
-_decompose-process-explore_help() {
-  echo "  Explore!"
-}
 
 _decompose-process-explore_db() {
   # Get the name of the database container
@@ -34,19 +18,7 @@ _decompose-process-explore_db_help() {
   echo "  Explore database"
 }
 
-_decompose-process-dc() {
-  echo 'docker-compose -f $dc_config_file "$@"'
-}
-_decompose-process-dc_help() {
-  echo "  Run docker compose in the current environment ($PROJECT_ENVIRONMENT)"
-}
-
 _decompose-process-build() {
-  # TODO: Generate SSL certificates if they don't already exist.
-  #echo 'TODO: Generate SSL certs for testing'
-  # TODO: Rebuild source for production
-  # TODO: Build remaining docker-compose containers
-
   decompose-process-templates 
   docker-compose build
 }
@@ -59,15 +31,6 @@ _decompose-process-up() {
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
-}
-
-_decompose-process-generate_self_signed_certs() {
-  local project_root; _decompose-project-root project_root
-  mkdir $project_root/certs
-  openssl req -nodes -x509 -newkey rsa:4096 -keyout $project_root/certs/server.key -out $project_root/certs/server.crt -days 356
-}
-_decompose-process-generate_self_signed_certs_help() {
-  echo "  Generate self signed tls certifications"
 }
 
 _decompose-process-import_db() {
@@ -110,11 +73,9 @@ _decompose-process-import_files() {
   ## Copy directory to container
   #docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
 }
-_decompose-process-import_uploads_help() {
+_decompose-process-import_files_help() {
   echo "  TODO: Copies 'files' directory to the php container"
 }
-
-
 
 _decompose-process-backup_config() {
   echo "TODO!!"
@@ -139,6 +100,5 @@ _decompose-process-backup_config_help() {
   echo "  TODO: Creates backup file of the current configuration for safe keeping"
   echo "  File is copied to '$project_root/backup_config' directory"
 }
-
 
 # vim:syntax=sh
