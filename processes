@@ -4,8 +4,8 @@ source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
-  'project-root' 'backup_config'
-  "${DECOMPOSE_WEB_PROCESSES[@]}" )
+  'backup_config' 'tail-dev-email'
+  "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}" )
 
 _decompose-process-explore_db() {
   # Get the name of the database container
@@ -16,6 +16,14 @@ _decompose-process-explore_db() {
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
+}
+
+_decompose-process-tail-dev-email() {
+  echo "Tailing"
+}
+_decompose-process-tail-dev-email_help() {
+  echo "  Tail the dev email messages being sent"
+
 }
 
 _decompose-process-build() {
