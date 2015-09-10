@@ -9,7 +9,7 @@ DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
 
 _decompose-process-explore_db() {
   # Get the name of the database container
-  db_container_name=$(docker-compose ps -q db)
+  local db_container_name=$(docker-compose ps -q db)
 
   # Enter mysql
   docker exec -it $db_container_name bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app"
@@ -19,11 +19,13 @@ _decompose-process-explore_db_help() {
 }
 
 _decompose-process-tail-dev-email() {
-  echo "Tailing"
+  # Get the name of the php container
+  local db_container_name=$(docker-compose ps -q php)
+  # Tail mail.out
+  docker exec -it $db_container_name bash -c "tail -f /tmp/mail.out"
 }
 _decompose-process-tail-dev-email_help() {
   echo "  Tail the dev email messages being sent"
-
 }
 
 _decompose-process-build() {
