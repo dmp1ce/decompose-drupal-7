@@ -2,7 +2,7 @@
 # Reference: http://wiki.nginx.org/Drupal
 server {
   server_name www.{{PROJECT_NGINX_SERVER_NAME}};
-  root /srv/http/source/; ## <-- Your only path reference.
+  root {{PROJECT_SOURCE_CONTAINER_PATH}}; ## <-- Your only path reference.
  
   # Enable compression, this will help if you have for instance advagg‎ module
   # by serving Gzip versions of the files.
@@ -14,6 +14,12 @@ server {
   }
 
   location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+  location = /version.txt {
     allow all;
     log_not_found off;
     access_log off;
