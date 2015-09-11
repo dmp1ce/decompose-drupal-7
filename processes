@@ -107,18 +107,17 @@ _decompose-process-import_db_help() {
 
 _decompose-process-import_files() {
   # Verify the the first parameter is a file
-  echo "TODO!!"
-  #local directory=$1
-  #if [ ! -d "$directory" ]; then
-  #  echo "Directory '$directory' does not exist"
-  #  exit 1
-  #fi
+  local directory=$1
+  if [ ! -d "$directory" ]; then
+    echo "Directory '$directory' does not exist"
+    exit 1
+  fi
 
-  ## Get the name of the database container
-  #php_container_name=$(docker-compose ps -q php)
+  # Get the name of the database container
+  local cid=$(docker-compose ps -q php)
 
-  ## Copy directory to container
-  #docker cp $directory/. $php_container_name:/srv/http/source/app/webroot/img/uploads
+  # Copy directory to container
+  docker cp $directory/. $cid:/srv/http/source/sites/default/files
 }
 _decompose-process-import_files_help() {
   echo "  TODO: Copies 'files' directory to the php container"
