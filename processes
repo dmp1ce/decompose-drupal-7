@@ -29,7 +29,33 @@ _decompose-process-tail-dev-email_help() {
 }
 
 _decompose-process-build() {
+  echo "Building decompose templates..."
   decompose-process-templates 
+
+  echo "Creating version file..."
+  local project_root=$(_decompose-project-root)
+  local git_base_revision="`git describe --tags --match=v* --always --dirty 2>&1`"
+  local git_base_status="`git status -unormal 2>&1`"
+  # Set current base version
+  echo -e "$PROJECT_ENVIRONMENT\n$git_base_revision" > \
+    "$project_root"/"$PROJECT_VERSION_FILE"
+
+  # Pull the latest images
+  # Waiting for docker-compose fix:
+  # https://github.com/docker/compose/pull/1494
+  echo "Updating docker images..."
+  docker pull busybox
+  docker pull debian:jessie
+  docker pull nginx
+  docker pull php:$PROJECT_PHP_VERSION
+  docker pull jwilder/nginx-proxy
+
+  # Remove 'source' container if this is production
+  echo "Rebuilding/recreating all containers..."
+  if [[ $PRODUCTION ]]; then
+    docker-compose rm -f source
+  fi
+
   docker-compose build
 }
 _decompose-process-build_help() {
@@ -38,6 +64,9 @@ _decompose-process-build_help() {
 
 _decompose-process-up() {
   docker-compose up -d
+
+  # Restart nginx-proxy
+  _decompose-process-restart_nginx_proxy
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
@@ -46,11 +75,13 @@ _decompose-process-up_help() {
 _decompose-process-import_db() {
   # Verify the the first parameter is a file
   echo "TODO!!"
-  #local sql_file=$1
-  #if [ ! -e "$sql_file" ]; then
-  #  echo "File '$sql_file' does not exist"
-  #  exit 1
-  #fi
+  local sql_file=$1
+  if [ ! -e "$sql_file" ]; then
+    echo "File '$sql_file' does not exist"
+    exit 1
+  fi
+
+  echo $sql_file
 
   ## Get the name of the database container
   #db_container_id=$(docker-compose ps -q db)
@@ -106,7 +137,7 @@ _decompose-process-backup_config() {
   #  $asc_files
 }
 _decompose-process-backup_config_help() {
-  local project_root; _decompose-project-root project_root
+  local project_root=$(_decompose-project-root)
   echo "  TODO: Creates backup file of the current configuration for safe keeping"
   echo "  File is copied to '$project_root/backup_config' directory"
 }
