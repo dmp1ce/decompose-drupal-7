@@ -84,26 +84,23 @@ _decompose-process-drush_help() {
 
 _decompose-process-import_db() {
   # Verify the the first parameter is a file
-  echo "TODO!!"
   local sql_file=$1
   if [ ! -e "$sql_file" ]; then
     echo "File '$sql_file' does not exist"
     exit 1
   fi
 
-  echo $sql_file
+  # Get the name of the database container
+  local cid=$(docker-compose ps -q php)
 
-  ## Get the name of the database container
-  #db_container_id=$(docker-compose ps -q db)
+  # Copy file to container /tmp
+  docker cp $sql_file $cid:/tmp
 
-  ## Copy file to container /tmp
-  #docker cp $sql_file $db_container_id:/tmp
+  # Import file
+  docker exec $cid bash -c "gzip -d < /tmp/$sql_file | drush sqlc"
 
-  ## Import file
-  #docker exec $db_container_id bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app < /tmp/$sql_file"
-
-  ## Delete /tmp file
-  #docker exec $db_container_id rm /tmp/$sql_file
+  # Delete /tmp file
+  docker exec $cid rm /tmp/$sql_file
 }
 _decompose-process-import_db_help() {
   echo "  TODO: Import DB passed in as a parameter 1"
