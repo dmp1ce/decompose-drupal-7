@@ -3,7 +3,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/web/elements
 
 ELEMENTS_POST_PROCESS=( "${ELEMENTS_WEB_POST_PROCESS[@]}" )
 
-# Were to write current version information to
+# Where to write current version information to
 PROJECT_VERSION_FILE="version.txt"
 
 # vim:syntax=sh
