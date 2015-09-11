@@ -4,7 +4,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
-  'backup_config' 'tail-dev-email'
+  'backup_config' 'tail-dev-email' 'drush'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}" )
 
 _decompose-process-explore_db() {
@@ -12,7 +12,7 @@ _decompose-process-explore_db() {
   local db_container_name=$(docker-compose ps -q db)
 
   # Enter mysql
-  docker exec -it $db_container_name bash -c "export TERM=dumb; mysql -u app_user -ppassword -D app"
+  docker exec -it $db_container_name bash -c "mysql -u app_user -ppassword -D app"
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
@@ -70,6 +70,16 @@ _decompose-process-up() {
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
+}
+
+_decompose-process-drush() {
+  # Get the name of the php container
+  local cid=$(docker-compose ps -q php)
+
+  docker exec -it $cid drush $1
+}
+_decompose-process-drush_help() {
+  echo "  Run drush with parameters"
 }
 
 _decompose-process-import_db() {
