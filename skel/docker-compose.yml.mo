@@ -5,6 +5,8 @@ php:
     - data
   links:
     - db
+  environment:
+    TERM: dumb
 {{#PRODUCTION}}
   restart: always
 {{/PRODUCTION}}
@@ -27,6 +29,7 @@ db:
     MYSQL_USER: app_user
     MYSQL_PASSWORD: password
     MYSQL_DATABASE: app
+    TERM: dumb
 {{#PRODUCTION}}
   restart: always
 {{/PRODUCTION}}
@@ -34,7 +37,7 @@ db:
 source:
   build: containers/source/.
   volumes:
-    - {{#DEVELOPMENT}}{{SOURCE_VOLUME_HOST}}:{{/DEVELOPMENT}}{{SOURCE_VOLUME_CONTAINER}}
+    - {{#DEVELOPMENT}}{{PROJECT_SOURCE_HOST_PATH}}:{{/DEVELOPMENT}}{{PROJECT_SOURCE_CONTAINER_PATH}}
   command: "true"
 data:
   build: containers/data/.
