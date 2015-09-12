@@ -102,7 +102,7 @@ _decompose-process-import_db() {
   docker exec $cid rm /tmp/$sql_file
 }
 _decompose-process-import_db_help() {
-  echo "  TODO: Import DB passed in as a parameter 1"
+  echo "  Import DB passed in as a parameter 1"
 }
 
 _decompose-process-import_files() {
@@ -120,7 +120,7 @@ _decompose-process-import_files() {
   docker cp $directory/. $cid:/srv/http/source/sites/default/files
 }
 _decompose-process-import_files_help() {
-  echo "  TODO: Copies 'files' directory to the php container"
+  echo "  Copies 'files' directory to the php container"
 }
 
 _decompose-process-backup_config() {
