@@ -1,4 +1,4 @@
-# Drupal 6 nginx config
+# Drupal 7 nginx config
 # Reference: http://wiki.nginx.org/Drupal
 server {
   server_name www.{{PROJECT_NGINX_SERVER_NAME}};
@@ -53,10 +53,9 @@ server {
   }
  
   location @rewrite {
-    # For Drupal 6 and below:
-    # Some modules enforce no slash (/) at the end of the URL
-    # Else this rewrite block wouldn't be needed (GlobalRedirect)
-    rewrite ^/(.*)$ /index.php?q=$1;
+    # For D7 and above:
+    # Clean URLs are handled in drupal_environment_initialize().
+    rewrite ^ /index.php;
   }
  
   location ~ \.php$ {
@@ -69,8 +68,6 @@ server {
   }
  
   # Fighting with Styles? This little gem is amazing.
-  # This is for D6
-  #location ~ ^/sites/.*/files/imagecache/ {
   # This is for D7 and D8
   location ~ ^/sites/.*/files/styles/ {
     try_files $uri @rewrite;
