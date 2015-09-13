@@ -4,7 +4,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
-  'backup_config' 'tail-dev-email' 'drush' 'backup-db'
+  'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}" )
 
 _decompose-process-explore_db() {
@@ -20,6 +20,18 @@ _decompose-process-explore_db() {
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
+}
+
+_decompose-process-explore-php-container() {
+  # Get container id
+  local cid=$(docker-compose ps -q php)
+
+  # Enter php
+  docker exec -it $cid bash
+
+}
+_decompose-process-explore-php-container_help() {
+  echo "  Explore the php container"
 }
 
 _decompose-process-backup-db() {
@@ -139,30 +151,6 @@ _decompose-process-import_files() {
 }
 _decompose-process-import_files_help() {
   echo "  Copies 'files' directory to the php container"
-}
-
-_decompose-process-backup_config() {
-  echo "TODO!!"
-  #echo "Backing up config..."
-  #local project_root; _decompose-project-root project_root
-
-  #local string_time=$(date +%s)
-  #local config_name=$PROJECT_NGINX_VIRTUAL_HOST_PROD
-  #local asc_files=$(cd "$project_root";\
-  #  echo ./containers/backup/.duply/site_data/*.asc)
-
-  #mkdir -p "$project_root"/backup_config
-  #tar -C "$project_root" \
-  #  -cvzf "$project_root"/backup_config/$config_name-config-$string_time".tar.gz" \
-  #  --exclude="*.git" \
-  #  ./.decompose \
-  #  ./containers/backup/.ssh \
-  #  $asc_files
-}
-_decompose-process-backup_config_help() {
-  local project_root=$(_decompose-project-root)
-  echo "  TODO: Creates backup file of the current configuration for safe keeping"
-  echo "  File is copied to '$project_root/backup_config' directory"
 }
 
 # vim:syntax=sh
