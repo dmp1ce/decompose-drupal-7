@@ -118,6 +118,9 @@ _decompose-process-import_files() {
 
   # Copy directory to container
   docker cp $directory/. $cid:$PROJECT_SOURCE_CONTAINER_PATH/sites/default/files
+
+  # Give access to everyone for 'files'
+  docker exec $cid chmod -R 777 $PROJECT_SOURCE_CONTAINER_PATH/sites/default/files
 }
 _decompose-process-import_files_help() {
   echo "  Copies 'files' directory to the php container"
