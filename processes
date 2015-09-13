@@ -4,22 +4,33 @@ source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
-  'backup_config' 'tail-dev-email' 'drush'
+  'backup_config' 'tail-dev-email' 'drush' 'backup-db'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}" )
 
 _decompose-process-explore_db() {
   # Get the name of the database container
-  local db_container_name=$(docker-compose ps -q db)
+  local cid=$(docker-compose ps -q db)
 
   # Enter mysql
   local password_param=""
   if [ "$PROJECT_DB_PASSWORD" ]; then
     local password_param="-p$PROJECT_DB_PASSWORD"
   fi
-  docker exec -it $db_container_name bash -c "mysql -u $PROJECT_DB_USER $password_parm -D $PROJECT_DB_NAME"
+  docker exec -it $cid bash -c "mysql -u $PROJECT_DB_USER $password_parm -D $PROJECT_DB_NAME"
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
+}
+
+_decompose-process-backup-db() {
+  # Get the name of the database container
+  local cid=$(docker-compose ps -q backup)
+
+  # Run backup
+  docker exec $cid duply site_data backup
+}
+_decompose-process-backup-db_help() {
+  echo "  Manually start backup process"
 }
 
 _decompose-process-tail-dev-email() {
