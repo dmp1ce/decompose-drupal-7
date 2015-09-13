@@ -117,7 +117,7 @@ _decompose-process-import_files() {
   local cid=$(docker-compose ps -q php)
 
   # Copy directory to container
-  docker cp $directory/. $cid:/srv/http/source/sites/default/files
+  docker cp $directory/. $cid:$PROJECT_SOURCE_CONTAINER_PATH/sites/default/files
 }
 _decompose-process-import_files_help() {
   echo "  Copies 'files' directory to the php container"
