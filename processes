@@ -12,7 +12,11 @@ _decompose-process-explore_db() {
   local db_container_name=$(docker-compose ps -q db)
 
   # Enter mysql
-  docker exec -it $db_container_name bash -c "mysql -u app_user -ppassword -D app"
+  local password_param=""
+  if [ "$PROJECT_DB_PASSWORD" ]; then
+    local password_param="-p$PROJECT_DB_PASSWORD"
+  fi
+  docker exec -it $db_container_name bash -c "mysql -u $PROJECT_DB_USER $password_parm -D $PROJECT_DB_NAME"
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
