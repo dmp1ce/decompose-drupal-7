@@ -106,7 +106,7 @@ _decompose-process-drush() {
   # Get the name of the php container
   local cid=$(docker-compose ps -q php)
 
-  docker exec -it $cid drush $1
+  docker exec -it $cid drush "$@"
 }
 _decompose-process-drush_help() {
   echo "  Run drush with parameters"
