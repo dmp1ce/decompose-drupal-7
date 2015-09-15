@@ -89,7 +89,11 @@ _decompose-process-build_help() {
 }
 
 _decompose-process-up() {
-  docker-compose up -d
+  if [[ $PRODUCTION ]]; then
+    docker-compose up -d --force-recreate
+  else
+    docker-compose up -d
+  fi
 
   # Restart nginx-proxy
   _decompose-process-restart_nginx_proxy
