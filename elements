@@ -10,5 +10,6 @@ PROJECT_VERSION_FILE="version.txt"
 PROJECT_DB_USER="app_user"
 PROJECT_DB_PASSWORD="password"
 PROJECT_DB_NAME="app"
+PROJECT_DB_ROOT_PASSWORD="dont_use_root_user"
 
 # vim:syntax=sh
