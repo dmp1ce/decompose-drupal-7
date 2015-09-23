@@ -20,12 +20,10 @@ RUN useradd -m -s /bin/bash duply
 COPY .duply/ /home/duply/.duply
 RUN chmod -R 700 /home/duply/.duply &&\
   chown -R duply:duply /home/duply/.duply
-{{#PRODUCTION}}
 # Copy ssh keys
 COPY .ssh/ /home/duply/.ssh
 RUN chmod -R 700 /home/duply/.ssh &&\
   chown -R duply:duply /home/duply/.ssh
-{{/PRODUCTION}}
 
 # Create directory for exporting sql
 RUN mkdir -p /srv/http/sql_backup && chmod 777 /srv/http/sql_backup
