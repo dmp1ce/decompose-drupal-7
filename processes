@@ -18,7 +18,7 @@ _decompose-process-explore_db() {
   if [ "$PROJECT_DB_PASSWORD" ]; then
     local password_param="-p$PROJECT_DB_PASSWORD"
   fi
-  docker exec -it $cid bash -c "mysql -u $PROJECT_DB_USER $password_parm -D $PROJECT_DB_NAME"
+  docker exec -it $cid bash -c "mysql -u $PROJECT_DB_USER $password_param -D $PROJECT_DB_NAME"
 }
 _decompose-process-explore_db_help() {
   echo "  Explore database"
