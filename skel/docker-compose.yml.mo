@@ -25,10 +25,10 @@ nginx:
 db:
   image: mariadb
   environment:
-    MYSQL_ROOT_PASSWORD: dont_use_root_user
-    MYSQL_USER: app_user
-    MYSQL_PASSWORD: password
-    MYSQL_DATABASE: app
+    MYSQL_ROOT_PASSWORD: {{PROJECT_DB_ROOT_PASSWORD}}
+    MYSQL_USER: {{PROJECT_DB_USER}}
+    MYSQL_PASSWORD: {{PROJECT_DB_PASSWORD}}
+    MYSQL_DATABASE: {{PROJECT_DB_DATABASE}}
     TERM: dumb
 {{#PRODUCTION}}
   restart: always
@@ -51,6 +51,9 @@ backup:
     - backup_data{{/DEVELOPMENT}}
   links:
     - db
+{{#PRODUCTION}}
+  restart: always
+{{/PRODUCTION}}
 {{#DEVELOPMENT}}
 backup_data:
   build: containers/backup_data/.

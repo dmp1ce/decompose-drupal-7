@@ -1,15 +1,20 @@
 # Include common elements
 source $(_decompose-project-root)/.decompose/environment/lib/web/elements
+source $(_decompose-project-root)/.decompose/environment/lib/backup/elements
 
 ELEMENTS_POST_PROCESS=( "${ELEMENTS_WEB_POST_PROCESS[@]}" )
 
 # Where to write current version information to
 PROJECT_VERSION_FILE="version.txt"
 
-# DB settings
+# Default Database settings
+PROJECT_DB_DATABASE="app"
 PROJECT_DB_USER="app_user"
 PROJECT_DB_PASSWORD="password"
-PROJECT_DB_NAME="app"
-PROJECT_DB_ROOT_PASSWORD="dont_use_root_user"
+PROJECT_DB_ROOT_PASSWORD="dont_user_root_user"
+
+# PHP timezone
+PROJECT_PHP_TIMEZONE="America/New_York"
+PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
 
 # vim:syntax=sh

@@ -1,0 +1,34 @@
+# Constant elements
+# Don't put secrets here!
+# Put them in .decompose/elements where they won't get checked in.
+PROJECT_ENVIRONMENT="production"
+PROJECT_NGINX_VIRTUAL_HOST_PROD="mysite.local"
+
+PROJECT_SOURCE_PATH="source/httpdocs"
+PROJECT_SOURCE_HOST_PATH="./containers/source/"$PROJECT_SOURCE_PATH
+PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
+
+# Where to write current version information to
+PROJECT_VERSION_FILE="containers/source/$PROJECT_SOURCE_PATH/version.txt"
+
+# Mail settings
+PROJECT_SENDMAIL_PATH_PROD="/usr/bin/msmtp -C /etc/msmtp_php -t --read-envelope-from"
+
+# Backup config
+PROJECT_BACKUP_CONFIG_NAME=$PROJECT_NGINX_VIRTUAL_HOST_PROD
+PROJECT_BACKUP_INCLUDES=".decompose containers/backup/.ssh \
+  containers/backup/.duply/site_data/*.asc"
+PROJECT_BACKUP_EXCLUDES=".gitmodules"
+
+# PHP version
+PROJECT_PHP_VERSION="fpm"
+
+# PHP timezone
+PROJECT_PHP_TIMEZONE="America/New_York"
+# PHP MySQL extension
+PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
+
+# No default nginx server
+PROJECT_NGINX_DEFAULT_HOST=
+
+# vim:syntax=sh

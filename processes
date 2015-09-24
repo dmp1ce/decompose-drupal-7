@@ -73,6 +73,7 @@ _decompose-process-build() {
   # https://github.com/docker/compose/pull/1494
   echo "Updating docker images..."
   docker pull busybox
+  docker pull mariadb
   docker pull debian:jessie
   docker pull nginx
   docker pull php:$PROJECT_PHP_VERSION
