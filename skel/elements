@@ -12,7 +12,7 @@ PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
 PROJECT_VERSION_FILE="containers/source/$PROJECT_SOURCE_PATH/version.txt"
 
 # Mail settings
-PROJECT_SENDMAIL_PATH_PROD="/usr/bin/msmtp -C /etc/msmtp_php -t --read-envelope-from"
+PROJECT_SENDMAIL_PATH_PROD="/usr/bin/msmtp -C /etc/msmtp_php -t"
 
 # Backup config
 PROJECT_BACKUP_CONFIG_NAME=$PROJECT_NGINX_VIRTUAL_HOST_PROD
