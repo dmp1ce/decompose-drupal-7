@@ -1,7 +1,7 @@
 # Drupal 7 nginx config
 # Reference: http://wiki.nginx.org/Drupal
 server {
-  server_name www.{{PROJECT_NGINX_SERVER_NAME}};
+  server_name {{PROJECT_NGINX_SERVER_NAME}};
   root {{PROJECT_SOURCE_CONTAINER_PATH}}; ## <-- Your only path reference.
  
   # Enable compression, this will help if you have for instance advagg‎ module
@@ -66,7 +66,7 @@ server {
     fastcgi_intercept_errors on;
     fastcgi_pass php:9000;
   }
- 
+
   # Fighting with Styles? This little gem is amazing.
   # This is for D7 and D8
   location ~ ^/sites/.*/files/styles/ {
@@ -81,6 +81,7 @@ server {
 
 # Redirect alternative domain names.
 server {
+  server_name www.{{PROJECT_NGINX_SERVER_NAME}};
   # $scheme will get the http protocol
   # and 301 is best practice for tablet, phone, desktop and seo
   return 301 $scheme://{{PROJECT_NGINX_SERVER_NAME}}$request_uri;
