@@ -1,2 +1,7 @@
-.decompose
+# Generated files
 /docker-compose.yml
+/backup_config
+
+# .decompose files
+/.decompose/elements
+/.decompose/processes
