@@ -17,7 +17,7 @@ PROJECT_SENDMAIL_PATH_PROD="/usr/bin/msmtp -C /etc/msmtp_php -t --read-envelope-
 # Backup config
 PROJECT_BACKUP_CONFIG_NAME=$PROJECT_NGINX_VIRTUAL_HOST_PROD
 PROJECT_BACKUP_INCLUDES=".decompose containers/backup/.ssh \
-  containers/backup/.duply/site_data/*.asc"
+  containers/backup/.duply/site_data"
 PROJECT_BACKUP_EXCLUDES=".gitmodules"
 
 # PHP version
