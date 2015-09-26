@@ -17,4 +17,7 @@ PROJECT_DB_ROOT_PASSWORD="dont_user_root_user"
 PROJECT_PHP_TIMEZONE="America/New_York"
 PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
 
+# Sendmail path for development
+PROJECT_SENDMAIL_PATH_DEV="/opt/mail_catch "
+
 # vim:syntax=sh

@@ -16,5 +16,9 @@ RUN sed -i 's|;mbstring.http_output =$|mbstring.http_output = pass|g' /usr/local
 # Set timezone
 RUN sed -i 's|;date.timezone =$|date.timezone = "{{PROJECT_PHP_TIMEZONE}}"|g' /usr/local/etc/php/php.ini
 
+# Add mail_catch script
+COPY mail_catch /opt/mail_catch
+RUN chmod +x /opt/mail_catch
+
 # Set working directory
 WORKDIR /srv/http/source

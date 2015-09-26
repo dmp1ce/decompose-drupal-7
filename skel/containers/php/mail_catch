@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Sendmail params: $@" >> /tmp/mail.out
+
+input=$(cat)
+echo "$input" >> /tmp/mail.out
