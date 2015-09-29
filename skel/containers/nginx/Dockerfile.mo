@@ -1,4 +1,9 @@
+{{#PROJECT_DEBUG_NGINX}}
+FROM esepublic/nginx-with-debug
+{{/PROJECT_DEBUG_NGINX}}
+{{^PROJECT_DEBUG_NGINX}}
 FROM nginx:latest
+{{/PROJECT_DEBUG_NGINX}}
 MAINTAINER David Parrish <daveparrish@tutanota.com>
 
 # Install wget and install/updates certificates
@@ -15,6 +20,15 @@ o/releases/current/linux-amd64/forego && chmod u+x /usr/local/bin/forego
 
 # Copy nginx config files
 COPY default.conf /etc/nginx/conf.d/default.conf
+{{#PROJECT_HTTP_SECURITY}}
+COPY htpasswd /etc/nginx/htpasswd
+{{/PROJECT_HTTP_SECURITY}}
+
+# Add x_forward_proto $https map with following formating:
+#     map $http_x_forwarded_proto $https {
+#         https on;
+#     }
+RUN sed -i '/ #gzip  on/a\\n    map $http_x_forwarded_proto $proxyhttps {\n        https on;\n    }' /etc/nginx/nginx.conf
 
 # Copy application scripts
 COPY app/. /app/

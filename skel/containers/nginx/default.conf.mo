@@ -50,6 +50,11 @@ server {
   location / {
     # This is cool because no php is touched for static content
     try_files $uri @rewrite;
+
+{{#PROJECT_HTTP_SECURITY}}
+    auth_basic  "Access Restricted";
+    auth_basic_user_file htpasswd;
+{{/PROJECT_HTTP_SECURITY}}
   }
  
   location @rewrite {
@@ -64,6 +69,7 @@ server {
     include fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $request_filename;
     fastcgi_intercept_errors on;
+    fastcgi_param HTTPS $proxyhttps if_not_empty;
     fastcgi_pass php:9000;
   }
 
