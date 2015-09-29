@@ -20,4 +20,9 @@ PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
 # Sendmail path for development
 PROJECT_SENDMAIL_PATH_DEV="/opt/mail_catch "
 
+# Debugging for nginx
+#PROJECT_DEBUG_NGINX="on"
+# Basic HTTP security
+#PROJECT_HTTP_SECURITY="on"
+
 # vim:syntax=sh
