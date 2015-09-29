@@ -15,10 +15,14 @@ RUN sed -i 's|;mbstring.http_output =$|mbstring.http_output = pass|g' /usr/local
 
 # Set timezone
 RUN sed -i 's|;date.timezone =$|date.timezone = "{{PROJECT_PHP_TIMEZONE}}"|g' /usr/local/etc/php/php.ini
+# Increase memory limit
+#RUN sed -i 's|memory_limit = 128M|memory_limit = 256M|g' /usr/local/etc/php.ini
+# Increase pm.max_children value (For Drupal's features module)
+#RUN sed -i 's|pm.max_children = 5|pm.max_children = 20|g' /usr/local/etc/php-fpm.conf
 
 # Add mail_catch script
 COPY mail_catch /opt/mail_catch
 RUN chmod +x /opt/mail_catch
 
-# Set working directory
-WORKDIR /srv/http/source
+# Set working directory to Drupal
+WORKDIR {{PROJECT_SOURCE_CONTAINER_PATH}}
