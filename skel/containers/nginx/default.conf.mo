@@ -85,6 +85,7 @@ server {
   }
 }
 
+{{#PROJECT_NGINX_VIRTUAL_HOST_ALTS}}
 # Redirect alternative domain names.
 server {
   server_name {{PROJECT_NGINX_VIRTUAL_HOST_ALTS}};
@@ -92,5 +93,6 @@ server {
   # and 301 is best practice for tablet, phone, desktop and seo
   return 301 $scheme://{{PROJECT_NGINX_VIRTUAL_HOST}}$request_uri;
 }
+{{/PROJECT_NGINX_VIRTUAL_HOST_ALTS}}
 
 # vim:syntax=nginx
