@@ -18,7 +18,7 @@ PROJECT_PHP_TIMEZONE="America/New_York"
 PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
 
 # Sendmail path for development
-PROJECT_SENDMAIL_PATH_DEV="/opt/mail_catch "
+PROJECT_SENDMAIL_PATH="/opt/mail_catch "
 
 # Debugging for nginx
 #PROJECT_DEBUG_NGINX="on"

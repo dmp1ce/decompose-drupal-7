@@ -1,7 +1,7 @@
 # Drupal 7 nginx config
 # Reference: http://wiki.nginx.org/Drupal
 server {
-  server_name {{PROJECT_NGINX_SERVER_NAME}};
+  server_name {{PROJECT_NGINX_VIRTUAL_HOST}};
   root {{PROJECT_SOURCE_CONTAINER_PATH}}; ## <-- Your only path reference.
  
   # Enable compression, this will help if you have for instance advagg‎ module
@@ -87,10 +87,10 @@ server {
 
 # Redirect alternative domain names.
 server {
-  server_name www.{{PROJECT_NGINX_SERVER_NAME}};
+  server_name {{PROJECT_NGINX_VIRTUAL_HOST_ALTS}};
   # $scheme will get the http protocol
   # and 301 is best practice for tablet, phone, desktop and seo
-  return 301 $scheme://{{PROJECT_NGINX_SERVER_NAME}}$request_uri;
+  return 301 $scheme://{{PROJECT_NGINX_VIRTUAL_HOST}}$request_uri;
 }
 
 # vim:syntax=nginx

@@ -18,7 +18,7 @@ nginx:
     - source
     - data
   environment:
-    - VIRTUAL_HOST={{PROJECT_NGINX_VIRTUAL_HOST}}
+    - VIRTUAL_HOST={{PROJECT_NGINX_PROXY_VIRTUAL_HOSTS}}
 {{#PRODUCTION}}
   restart: always
 {{/PRODUCTION}}
