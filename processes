@@ -65,7 +65,7 @@ _decompose-process-build() {
   local project_root=$(_decompose-project-root)
   local git_base_revision="`git -C $project_root describe --tags --match=v* --always --dirty 2>&1`"
   # Set current base version
-  echo -e "$PROJECT_ENVIRONMENT\n$git_base_revision" > \
+  echo -e "$PROJECT_ENVIRONMENT\n$git_base_revision\n\n$(date)" > \
     "$project_root"/"$PROJECT_VERSION_FILE"
 
   # Pull the latest images
