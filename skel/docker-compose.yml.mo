@@ -39,6 +39,8 @@ source:
   volumes:
     - {{#DEVELOPMENT}}{{PROJECT_SOURCE_HOST_PATH}}:{{/DEVELOPMENT}}{{PROJECT_SOURCE_CONTAINER_PATH}}
   command: "true"
+  labels:
+    - "data_container=true"
 data:
   build: containers/data/.
   command: "true"
