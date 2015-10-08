@@ -79,6 +79,9 @@ _decompose-process-build() {
   docker pull dmp1ce/php-fpm-drupal
   docker pull jwilder/nginx-proxy
 
+  # Generate nginx-proxy configurations
+  _decompose-process-generate_nginx_proxy_configs
+
   # Remove 'source' container if this is production
   echo "Rebuilding/recreating all containers..."
   if [[ $PRODUCTION ]]; then
@@ -97,6 +100,19 @@ _decompose-process-up() {
   else
     docker-compose up -d
   fi
+
+  # If nginx-proxy is not running start it first to copy configuration files to it
+  local nginx_proxy_id=$(_decompose-process_nginx_proxy_id)
+  if [ -z "$nginx_proxy_id" ]; then
+    local nginx_proxy_id=$(_decompose-process-start_nginx_proxy)
+  fi
+
+  # Copy configuration files to nginx-proxy
+  local nginx_proxy_dir="$(_decompose-project-root)/containers/nginx_proxy"
+  test -d "$nginx_proxy_dir/vhost.d" &&
+  docker cp "$nginx_proxy_dir"/vhost.d/. $nginx_proxy_id:/etc/nginx/vhost.d
+  test -d "$nginx_proxy_dir/certs" &&
+  docker cp $nginx_proxy_dir/certs/. $nginx_proxy_id:/etc/nginx/certs
 
   # Restart nginx-proxy
   _decompose-process-restart_nginx_proxy
