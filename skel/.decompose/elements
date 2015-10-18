@@ -1,0 +1,45 @@
+# Include constant elements
+source $(_decompose-project-root)/elements
+
+PROJECT_ENVIRONMENT="development"
+PROJECT_NGINX_VIRTUAL_HOST="mysite.local"
+PROJECT_NGINX_VIRTUAL_HOST_ALTS=""
+
+# Mail SMTP Service
+#PROJECT_SMTP_HOST=""
+#PROJECT_SMTP_USER=""
+#PROJECT_SMTP_PASSWORD=""
+# Sendmail path for development
+PROJECT_SENDMAIL_PATH="/opt/mail_catch "
+
+# DB settings
+PROJECT_DB_USER="drupal"
+PROJECT_DB_DATABASE="drupal_user"
+PROJECT_DB_PASSWORD=""
+PROJECT_DB_ROOT_PASSWORD=""
+
+# Backup
+#PROJECT_BACKUP_GPG_KEY=""
+#PROJECT_BACKUP_TARGET=""
+#PROJECT_BACKUP_GPG_PW=""
+
+# debugging for nginx
+#PROJECT_DEBUG_NGINX="on"
+# Basic HTTP security
+#PROJECT_HTTP_SECURITY="on"
+
+# Production server settings (for updating)
+#PROJECT_PRODUCTION_SERVER_IP=""
+#PROJECT_PRODUCTION_SERVER_USER=""
+#PROJECT_PRODUCTION_SERVER_BASE_PATH=""
+
+# reverse proxy settings
+PROJECT_WEBSITE_TO_EXPOSE_IP="localhost"
+PROJECT_WEBSITE_TO_EXPOSE_PORT="443"
+PROJECT_REVERSE_PROXY_USER=""
+PROJECT_REVERSE_PROXY_IP=""
+PROJECT_REVERSE_PROXY_PORT="44443"
+
+PROJECT_NGINX_DEFAULT_HOST=
+
+# vim:syntax=sh
