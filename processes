@@ -113,6 +113,8 @@ _decompose-process-up() {
   docker cp "$nginx_proxy_dir"/vhost.d/. $nginx_proxy_id:/etc/nginx/vhost.d
   test -d "$nginx_proxy_dir/certs" &&
   docker cp $nginx_proxy_dir/certs/. $nginx_proxy_id:/etc/nginx/certs
+  test -f "$nginx_proxy_dir/proxy.conf" &&
+  docker cp $nginx_proxy_dir/proxy.conf $nginx_proxy_id:/etc/nginx/proxy.conf
 
   # Restart nginx-proxy
   _decompose-process-restart_nginx_proxy
