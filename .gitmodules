@@ -7,3 +7,6 @@
 [submodule "lib/backup"]
 	path = lib/backup
 	url = https://github.com/dmp1ce/decompose-backup-common.git
+[submodule "lib/docker"]
+	path = lib/docker
+	url = https://github.com/dmp1ce/decompose-docker-common.git

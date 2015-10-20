@@ -2,12 +2,13 @@
 source $(_decompose-project-root)/.decompose/environment/lib/web/processes
 source $(_decompose-project-root)/.decompose/environment/lib/common/processes
 source $(_decompose-project-root)/.decompose/environment/lib/backup/processes
+source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
-  "${DECOMPOSE_BACKUP_PROCESSES[@]}" )
+  "${DECOMPOSE_BACKUP_PROCESSES[@]}" "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
 
 _decompose-process-explore_db() {
   # Get the name of the database container
