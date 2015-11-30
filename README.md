@@ -8,7 +8,7 @@ Drupal 7 environment for Decompose intended to help developers quickly start a D
 
 # Quick Start
 
-```
+``` sh
 decompose --init https://github.com/dmp1ce/decompose-drupal-7.git
 # Download Drupal 7 into containers/source/source/httpdocs
 decompose build && decompose up
