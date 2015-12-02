@@ -1,0 +1,3 @@
+Add custom libraries here
+
+This folder is for developing or testing new libraries quickly without needing to rebuild the container again to see changes

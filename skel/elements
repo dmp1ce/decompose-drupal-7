@@ -4,9 +4,11 @@
 PROJECT_ENVIRONMENT="production"
 PROJECT_NGINX_VIRTUAL_HOST="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_ALTS="www.mysite.local alt_mysite.local www.alt_mysite.local"
+# Set this site as default.
+PROJECT_NGINX_DEFAULT_HOST="mysite.local"
 
 # Source location constants
-PROJECT_SOURCE_PATH="source/httpdocs"
+PROJECT_SOURCE_PATH="source/drupal"
 PROJECT_SOURCE_HOST_PATH="./containers/source/"$PROJECT_SOURCE_PATH
 PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
 
@@ -24,7 +26,5 @@ PROJECT_BACKUP_EXCLUDES=( '.gitmodules' )
 # PHP timezone
 PROJECT_PHP_TIMEZONE="America/New_York"
 
-# No default nginx server
-PROJECT_NGINX_DEFAULT_HOST=
 
 # vim:syntax=sh

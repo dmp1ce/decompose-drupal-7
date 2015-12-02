@@ -4,6 +4,8 @@ source $(_decompose-project-root)/elements
 PROJECT_ENVIRONMENT="development"
 PROJECT_NGINX_VIRTUAL_HOST="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_ALTS=""
+# Default nginx_proxy host
+PROJECT_NGINX_DEFAULT_HOST="mysite.local"
 
 # Mail SMTP Service
 #PROJECT_SMTP_HOST=""
@@ -13,10 +15,10 @@ PROJECT_NGINX_VIRTUAL_HOST_ALTS=""
 PROJECT_SENDMAIL_PATH="/opt/mail_catch "
 
 # DB settings
-PROJECT_DB_USER="drupal"
-PROJECT_DB_DATABASE="drupal_user"
-PROJECT_DB_PASSWORD=""
-PROJECT_DB_ROOT_PASSWORD=""
+PROJECT_DB_USER="drupal_user"
+PROJECT_DB_DATABASE="drupal"
+PROJECT_DB_PASSWORD="password"
+PROJECT_DB_ROOT_PASSWORD="root_password_dont_use"
 
 # Backup
 #PROJECT_BACKUP_GPG_KEY=""
@@ -41,6 +43,5 @@ PROJECT_REVERSE_PROXY_USER=""
 PROJECT_REVERSE_PROXY_IP=""
 PROJECT_REVERSE_PROXY_PORT="44443"
 
-PROJECT_NGINX_DEFAULT_HOST=
 
 # vim:syntax=sh
