@@ -40,9 +40,9 @@ The containers directory is the configuration for all containers used by Drupal 
 
 The `docker-compose.yml.mo` is a template file for creating the `docker-compose.yml` file. This file configures how each container interacts with each other. It also configures various settings such as environment variables, labels and restart settings.
 
-The elements file contains non-private elements. See [elements section](#elements).
+The elements file contains non-private elements. Private elements such as passwords or API keys go in `.decompose/elements` and are not checked in. See [elements section](#elements) for details.
 
-The processes file contains non-private processes. See [processes section](#processes).
+The processes file contains non-private processes. Private processes such as development only processes go in `.decompose/processes` and are not checked in. See [processes section](#processes) for details.
 
 TODO: Go into more detail about each container which is used.
 
