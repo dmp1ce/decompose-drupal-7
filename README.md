@@ -66,6 +66,7 @@ You can create your own elmeents by adding them to the `.decompose/elements` fil
 - `PROJECT_PHP_TIMEZONE` : The timezone of the server. Used to configures the PHP timezone.
 - `PROJECT_DEBUG_NGINX` : Turn nginx debugging on
 - `PROJECT_HTTP_SECURITY` : Turn on HTTP security. TODO: Is generating a htpasswd file necessary?
+- `PROJECT_NGINX_PROXY_IMAGE` : Specify the nginx-proxy image to use. [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy) is the default image.
 
 #### SMTP Elements
 - `PROJECT_SMTP_HOST` : SMTP host for sending email
