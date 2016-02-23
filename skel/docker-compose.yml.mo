@@ -63,7 +63,7 @@ backup:
 {{#PRODUCTION}}
   restart: always
 {{/PRODUCTION}}
-# Backup data containers
+# Backup data container
 backup_data:
   build: containers/backup_data/.
   command: "true"
