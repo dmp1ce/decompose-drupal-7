@@ -1,4 +1,4 @@
-#DECOMPOSE_MYPROJECT_PROCESSES+=( 'project_specific_process' ) 
+#DECOMPOSE_MYPROJECT_PROCESSES+=( 'project_specific_process' )
 #
 #_decompose-process-project_specific_process() {
 #  echo "custom process for 'my project'"
