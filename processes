@@ -123,7 +123,7 @@ _decompose-process-export_db() {
   local cid=$(docker-compose ps -q php)
 
   # Export file
-  docker exec -u hostuser $cid bash -c "drush sql-dump --gzip > /tmp/${filename##*/}.sql.gz"
+  docker exec $cid bash -c "drush sql-dump --gzip > /tmp/${filename##*/}.sql.gz"
 
   # Copy file to container /tmp
   docker cp $cid:/tmp/${filename##*/}.sql.gz $filename.sql.gz
