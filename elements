@@ -22,4 +22,7 @@ PROJECT_SENDMAIL_PATH="/opt/mail_catch "
 # Basic HTTP security
 #PROJECT_HTTP_SECURITY="on"
 
+# Load projects elements last so elements can be overriden by project
+source $(_decompose-project-root)/elements
+
 # vim:syntax=sh
