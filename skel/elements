@@ -26,5 +26,4 @@ PROJECT_BACKUP_EXCLUDES=( '.gitmodules' 'backup_config' )
 # PHP timezone
 PROJECT_PHP_TIMEZONE="America/New_York"
 
-
 # vim:syntax=sh
