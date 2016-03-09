@@ -1,6 +1,3 @@
-# Include constant elements
-source $(_decompose-project-root)/elements
-
 PROJECT_ENVIRONMENT="development"
 PROJECT_NGINX_VIRTUAL_HOST="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_ALTS=""
@@ -42,6 +39,16 @@ PROJECT_WEBSITE_TO_EXPOSE_PORT="443"
 PROJECT_REVERSE_PROXY_USER=""
 PROJECT_REVERSE_PROXY_IP=""
 PROJECT_REVERSE_PROXY_PORT="44443"
+
+# GPG key generation settings
+#PROJECT_BACKUP_GPG_REALNAME=""
+#PROJECT_BACKUP_GPG_COMMENT=""
+#PROJECT_BACKUP_GPG_EMAIL=""
+#PROJECT_BACKUP_GPG_KEY_DIR="containers/backup/.duply/site_data"
+
+# SSH key settings
+#PROJECT_BACKUP_SSH_COMMENT=""
+#PROJECT_BACKUP_SSH_KEY_DIR="containers/backup/.ssh"
 
 
 # vim:syntax=sh
