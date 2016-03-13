@@ -157,4 +157,7 @@ _decompose-process-import_files_help() {
   echo "  Copies 'files' directory to the php container"
 }
 
+# Source project processes last to allow the project to override any environment process
+source $(_decompose-project-root)/processes
+
 # vim:syntax=sh
