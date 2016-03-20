@@ -11,4 +11,4 @@ before_install:
   - sudo apt-get install -qq bats
 
 script:
-  - ./test/run_tests_full.bash
+  - travis_wait ./test/run_tests_full.bash
