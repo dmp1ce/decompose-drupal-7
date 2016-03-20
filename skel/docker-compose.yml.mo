@@ -61,17 +61,10 @@ backup:
   command: "/home/duply/backup_service"
   volumes_from:
     - data
-    - backup_data
   links:
     - db
 {{#PRODUCTION}}
   restart: always
 {{/PRODUCTION}}
-# Backup data container
-backup_data:
-  build: containers/backup_data/.
-  command: "true"
-  labels:
-    - "data_container=true"
 
 # vi: set tabstop=2 expandtab syntax=yaml:
