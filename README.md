@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dmp1ce/decompose-drupal-7.svg?branch=master)](https://travis-ci.org/dmp1ce/decompose-drupal-7)
+
 Drupal 7 environment for Decompose intended to help developers quickly start a Drupal 7 website. Because this project uses Docker instead of a virtual machine, the website is suitable for production as well as development and testing!
 
 # Requirements
