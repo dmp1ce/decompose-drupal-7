@@ -11,7 +11,7 @@ function setup_testing_environment() {
 
   # Build decompose environment image
   echo "Decompose build environment"
-  testing_env_build=$(docker build -t decompose_build_environment ./decompose_environment/.)
+  testing_env_build=$(docker build -t decompose_build_environment "$DIR"/decompose_environment/.)
   [ "$?" == "1" ] && echo "$testing_env_build"
 }
 
