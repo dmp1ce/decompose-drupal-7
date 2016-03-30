@@ -17,4 +17,4 @@ before_install:
   - sudo chmod +x /usr/local/bin/docker-compose
 
 script:
-  - travis wait 60 bats ./skel/bats/drupal-7
+  - travis_wait 60 bats ./skel/bats/drupal-7
