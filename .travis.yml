@@ -6,4 +6,4 @@ services:
 language: bash
 
 script:
-  - travis_wait 40 ./test/run_tests_full.bash
+  - travis_wait 60 ./test/run_tests_full.bash
