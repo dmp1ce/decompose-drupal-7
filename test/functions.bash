@@ -9,15 +9,32 @@ function setup_testing_environment() {
   testing_env_build=$(docker run --privileged --name decompose-docker-drupal7-testing -d docker:dind)
   [ ["$?" == "1" ] && echo "$testing_env_build" ]
 
-  # Build decompose environment image
-  echo "Decompose build environment"
-  testing_env_build=$(docker build -t decompose_build_environment "$DIR"/decompose_environment/.)
+  # Build testing image
+  local project_directory=$(readlink -f "$DIR/../")
+  local tmp_tester_build="/tmp/decompose-docker-drupal-7-testing"
+  # Copy volume so we can safely dereference symlinks
+  # Create docker container for doing tests
+  cp -rL "$project_directory/." "$tmp_tester_build"
+  cp "$project_directory/test/Dockerfile.tester" "$tmp_tester_build/Dockerfile"
+  local testing_env_build=$(docker build -t decompose-docker-drupal-7-testing-tester "$tmp_tester_build/.")
+
   [ "$?" == "1" ] && echo "$testing_env_build"
 }
 
 function run_tests() {
+  local tester_image="docker run --rm --link decompose-docker-drupal7-testing:docker decompose-docker-drupal-7-testing-tester"
+  local return_code=0
+
   echo "Running BATS tests"
-  bats "$DIR/bats/dind.bats"
+  echo "Drupal 7 tests"
+  $tester_image bats "/app/skel/bats/drupal-7"
+  local return_code+=$?
+
+  #echo "Web library tests"
+  #$tester_image bats "/app/skel/bats/web"
+  #local return_code+=$?
+
+  return $return_code
 }
 
 function teardown_testing_environment() {
@@ -27,6 +44,6 @@ function teardown_testing_environment() {
   [ "$?" == "1" ] && echo "$testing_env_cleanup"
 
   echo "decompose build environment"
-  testing_env_cleanup=$(docker rmi -f decompose_build_environment)
+  testing_env_cleanup=$(docker rmi -f decompose-docker-drupal-7-testing-tester)
   [ "$?" == "1" ] && echo "$testing_env_cleanup"
 }
