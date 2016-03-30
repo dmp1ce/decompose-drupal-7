@@ -5,10 +5,5 @@ services:
 
 language: bash
 
-before_install:
-  - sudo add-apt-repository ppa:duggan/bats --yes
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq bats
-
 script:
   - travis_wait 40 ./test/run_tests_full.bash

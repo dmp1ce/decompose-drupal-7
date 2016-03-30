@@ -10,6 +10,7 @@ function setup_testing_environment() {
   [ ["$?" == "1" ] && echo "$testing_env_build" ]
 
   # Build testing image
+  echo "Tester image"
   local project_directory=$(readlink -f "$DIR/../")
   local tmp_tester_build="/tmp/decompose-docker-drupal-7-testing"
   # Copy volume so we can safely dereference symlinks
