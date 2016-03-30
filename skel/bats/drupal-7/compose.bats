@@ -13,7 +13,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   run decompose build
 
   echo $output
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
 }
 
 @test "'decompose up' starts containers without error" {
