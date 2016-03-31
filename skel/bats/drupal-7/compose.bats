@@ -1,19 +1,27 @@
 #!/usr/bin/env bats
 
-#TESTER_IMAGE="docker run --rm --link decompose-docker-drupal7-testing:docker docker run --rm tester"
-#
 # These tests build the Docker Compose containers and verify their functionality.
 #
 # Order of these tests is important because they build up the project, test some things and then cleanup. The reason for this is because building the project takes so long. Every tests building the project would take such a long time that it wouldn't be worth running the tests frequently.
 
 load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
+@test "'decompose build' failures return error code" {
+  cd "$WORKING"
+  echo "Syntax error here!" >> docker-compose.yml.mo
+  run decompose build
+
+  echo "$output"
+  echo "Status is: $status"
+  [ "$status" -ne 0 ]
+}
+
 @test "'decompose build' builds containers without error" {
   cd "$WORKING"
   run decompose build
 
-  echo $output
-  [ "$status" -eq 1 ]
+  echo "$output"
+  [ "$status" -eq 0 ]
 }
 
 @test "'decompose up' starts containers without error" {
@@ -21,7 +29,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   decompose --build
   run decompose up
 
-  echo $output
+  echo "$output"
   [ "$status" -eq 0 ]
 }
 

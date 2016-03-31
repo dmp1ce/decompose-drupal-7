@@ -60,9 +60,16 @@ _decompose-process-tail-dev-email_help() {
 }
 
 _decompose-process-build() {
+  local return_code=0
+
   _decompose-process-common-build
+  return_code=$((return_code + $?))
   _decompose-process_nginx_proxy_build
+  return_code=$((return_code + $?))
   _decompose-process-docker-build
+  return_code=$((return_code + $?))
+
+  return $return_code
 }
 _decompose-process-build_help() {
   echo "  Build the project"
