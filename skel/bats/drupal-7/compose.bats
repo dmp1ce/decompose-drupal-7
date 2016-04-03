@@ -6,16 +6,6 @@
 
 load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
-@test "'decompose build' failures return error code" {
-  cd "$WORKING"
-  echo "Syntax error here!" >> docker-compose.yml.mo
-  run decompose build
-
-  echo "$output"
-  echo "Status is: $status"
-  [ "$status" -ne 0 ]
-}
-
 # Production tests
 @test "'decompose build' builds containers without error" {
   cd "$WORKING"
@@ -96,8 +86,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
 function setup() {
   setup_testing_environment
-  
-} 
+}
 
 function teardown() {
   teardown_testing_environment
