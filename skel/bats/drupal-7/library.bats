@@ -4,7 +4,7 @@
 
 load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
-@test "Library bats exist" {
+@test "Web library bats exist" {
   cd "$WORKING"
   local number_of_bats=$(ls -alh bats/web/*.bats | wc -l)
 
