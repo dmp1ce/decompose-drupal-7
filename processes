@@ -72,7 +72,10 @@ _decompose-process-build() {
   return_code=$((return_code + $?))
 
   # If there was an error, then just return now before creating release
-  [ $return_code -eq 0 ] || (echo "Got $return_code" && return $return_code)
+  if [ $return_code -ne 0 ]; then
+    echo "Return code of '$return_code' detected. Returning."
+    return $return_code
+  fi
 
   if [ "$PRODUCTION" = "true" ]; then
     echo "Making permissions on build, config and release volumes 777 ..."
