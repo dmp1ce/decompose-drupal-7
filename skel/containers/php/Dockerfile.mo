@@ -21,8 +21,17 @@ RUN sed -i 's|;date.timezone =$|date.timezone = "{{PROJECT_PHP_TIMEZONE}}"|g' /u
 #RUN sed -i 's|pm.max_children = 5|pm.max_children = 20|g' /usr/local/etc/php-fpm.conf
 
 # Add mail_catch script
+# Create 'hostuser'
+# Create temporary release path
 COPY mail_catch /opt/mail_catch
-RUN chmod +x /opt/mail_catch
+RUN chmod +x /opt/mail_catch && \
+groupadd -g {{PROJECT_HOST_GROUPID}} -o hostuser && \
+useradd -m -u {{PROJECT_HOST_USERID}} -g {{PROJECT_HOST_GROUPID}} hostuser && \
+mkdir -p {{PROJECT_CURRENT_RELEASE_PATH}}/drupal
+
+# Add cron_service script
+COPY cron_service /opt/cron_service
+RUN chmod +x /opt/cron_service
 
 # Set working directory to Drupal
-WORKDIR {{PROJECT_SOURCE_CONTAINER_PATH}}
+WORKDIR {{PROJECT_CURRENT_RELEASE_PATH}}/drupal

@@ -47,7 +47,7 @@ function setup_testing_environment() {
   fi
 
   # Reference elements and processes files in WORKING directory
-  #cp "$BATS_TEST_DIRNAME/fixtures/elements" "$tmpdir/build-test/.decompose"
+  cp "$BATS_TEST_DIRNAME/fixtures/elements" "$tmpdir/build-test/.decompose"
   #cp "$BATS_TEST_DIRNAME/fixtures/processes" "$tmpdir/build-test/.decompose"
 }
 

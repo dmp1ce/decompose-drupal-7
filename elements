@@ -2,7 +2,7 @@
 source $(_decompose-project-root)/.decompose/environment/lib/web/elements
 source $(_decompose-project-root)/.decompose/environment/lib/backup/elements
 
-ELEMENTS_POST_PROCESS=( "${ELEMENTS_WEB_POST_PROCESS[@]}" )
+ELEMENTS_POST_PROCESS+=( "${ELEMENTS_WEB_POST_PROCESS[@]}" )
 
 # Default Database settings
 PROJECT_DB_DATABASE="app"
@@ -17,12 +17,19 @@ PROJECT_PHP_MYSQL_EXTENSION="pdo_mysql"
 # Sendmail path for development
 PROJECT_SENDMAIL_PATH="/opt/mail_catch "
 
+# Set local user/group id
+PROJECT_HOST_USERID="$(id -u)"
+PROJECT_HOST_GROUPID="$(id -g)"
+
+# Backup
+PROJECT_BACKUP_SOURCE="/app/files"
+
 # Debugging for nginx
 #PROJECT_DEBUG_NGINX="on"
 # Basic HTTP security
 #PROJECT_HTTP_SECURITY="on"
 
-# Load projects elements last so elements can be overriden by project
+# Allow project elements file to override all elements
 source $(_decompose-project-root)/elements
 
 # vim:syntax=sh

@@ -7,10 +7,15 @@ PROJECT_NGINX_VIRTUAL_HOST_ALTS="www.mysite.local alt_mysite.local www.alt_mysit
 # Set this site as default.
 PROJECT_NGINX_DEFAULT_HOST="mysite.local"
 
+# Make this unique from other projects.
+PROJECT_NAMESPACE="drupal-7"
+
 # Source location constants
 PROJECT_SOURCE_PATH="source/drupal"
-PROJECT_SOURCE_HOST_PATH="./containers/source/"$PROJECT_SOURCE_PATH
-PROJECT_SOURCE_CONTAINER_PATH="/srv/http/source"
+PROJECT_SOURCE_HOST_PATH="$(_decompose-project-root)/containers/source/"$PROJECT_SOURCE_PATH
+PROJECT_RELEASES_PATH="/app/releases"
+PROJECT_CURRENT_RELEASE_PATH="${PROJECT_RELEASES_PATH}/current"
+PROJECT_BUILD_PATH="/app/build"
 
 # Where to write current version information to
 PROJECT_VERSION_FILE="containers/source/$PROJECT_SOURCE_PATH/version.txt"

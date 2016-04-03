@@ -16,6 +16,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   [ "$status" -ne 0 ]
 }
 
+# Production tests
 @test "'decompose build' builds containers without error" {
   cd "$WORKING"
   run decompose build
@@ -42,6 +43,43 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   [ "${#lines[@]}" -gt 2 ]
 }
 
+# Development tests
+@test "'decompose build' builds containers without error for development" {
+  cd "$WORKING"
+
+  # Switch to development element
+  echo 'PROJECT_ENVIRONMENT="development"' >> "$WORKING/.decompose/elements"
+
+  run decompose build
+
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+@test "'decompose up' starts containers without error for development" {
+  cd "$WORKING"
+
+  # Switch to development element
+  echo 'PROJECT_ENVIRONMENT="development"' >> "$WORKING/.decompose/elements"
+
+  decompose --build
+  run decompose up
+
+  echo "$output"
+  [ "$status" -eq 0 ]
+}
+
+@test "Recreating project doesn't create new volumes" {
+  cd "$WORKING"
+  local volume_count=$(docker volume ls | wc -l)
+
+  decompose --build
+  decompose up
+
+  local new_volume_count=$(docker volume ls | wc -l)
+
+  [ "$volume_count" -eq "$new_volume_count" ]
+}
+
 @test "Stop project" {
   cd "$WORKING"
   decompose --build
@@ -52,10 +90,9 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
 @test "Remove project" {
   cd "$WORKING"
   decompose --build
-  docker-compose rm -f
+  docker-compose rm -f -v
   docker rm nginx_proxy
 }
-
 
 function setup() {
   setup_testing_environment

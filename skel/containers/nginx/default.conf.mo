@@ -2,7 +2,7 @@
 # Reference: http://wiki.nginx.org/Drupal
 server {
   server_name {{PROJECT_NGINX_VIRTUAL_HOST}};
-  root {{PROJECT_SOURCE_CONTAINER_PATH}}; ## <-- Your only path reference.
+  root {{PROJECT_CURRENT_RELEASE_PATH}}/drupal; ## <-- Your only path reference.
  
   # Enable compression, this will help if you have for instance advagg‎ module
   # by serving Gzip versions of the files.

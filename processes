@@ -5,7 +5,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/backup/processes
 source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 
 # Declare processes
-DECOMPOSE_PROCESSES=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
+DECOMPOSE_PROCESSES+=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
   'export_db'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
@@ -31,7 +31,7 @@ _decompose-process-explore-php-container() {
   local cid=$(docker-compose ps -q php)
 
   # Enter php
-  docker exec -it $cid bash
+  docker exec -u hostuser -it $cid bash
 
 }
 _decompose-process-explore-php-container_help() {
@@ -66,7 +66,41 @@ _decompose-process-build() {
   return_code=$((return_code + $?))
   _decompose-process_nginx_proxy_build
   return_code=$((return_code + $?))
+  _decompose-process-build_version_file
+  return_code=$((return_code + $?))
   _decompose-process-docker-build
+  return_code=$((return_code + $?))
+
+  # If there was an error, then just return now before creating release
+  [ $return_code -eq 0 ] || (echo "Got $return_code" && return $return_code)
+
+  if [ "$PRODUCTION" = "true" ]; then
+    echo "Making permissions on build, config and release volumes 777 ..."
+    docker-compose run -u root --rm source bash -c "chmod 777 ${PROJECT_BUILD_PATH}/build && \
+chmod 777 ${PROJECT_RELEASES_PATH} && mkdir -p ${PROJECT_BUILD_PATH}/build/config && \
+chmod 777 ${PROJECT_BUILD_PATH}/build/config"
+    return_code=$((return_code + $?))
+  fi
+
+  if [ "$DEVELOPMENT" = "true" ]; then
+    # Make the default directory if it doesn't exist
+    mkdir -p $(_decompose-project-root)/containers/source/source/drupal/sites/default
+    return_code=$((return_code + $?))
+  fi
+
+  echo "Running update_source.bash ..."
+  docker-compose run --rm source ${PROJECT_BUILD_PATH}/docker_build_context/update_source.bash
+  return_code=$((return_code + $?))
+
+  # Add custom build steps here
+  # docker-compose run --rm your_container your_build_command
+
+  echo "Running create_release.bash ..."
+  docker-compose run -u root --rm source ${PROJECT_BUILD_PATH}/docker_build_context/create_release.bash
+  return_code=$((return_code + $?))
+
+  echo "Making 'files' volume writable ..."
+  docker-compose run --rm files sh -c "chmod 777 /app/files/*"
   return_code=$((return_code + $?))
 
   return $return_code
@@ -76,8 +110,14 @@ _decompose-process-build_help() {
 }
 
 _decompose-process-up() {
+   # Set current release to latest
+  docker-compose run --rm -u root source ${PROJECT_BUILD_PATH}/docker_build_context/set_current_release.bash
+
   _decompose-process-docker-up
   _decompose-process_nginx_proxy_up
+
+  # Clean up old releases
+  docker-compose run --rm -u root source ${PROJECT_BUILD_PATH}/docker_build_context/cleanup_releases.bash
 }
 _decompose-process-up_help() {
   echo "  Start project locally"
@@ -87,7 +127,7 @@ _decompose-process-drush() {
   # Get the name of the php container
   local cid=$(docker-compose ps -q php)
 
-  docker exec -it $cid drush "$@"
+  docker exec -u hostuser -it $cid drush "$@"
 }
 _decompose-process-drush_help() {
   echo "  Run drush with parameters"
@@ -154,11 +194,15 @@ _decompose-process-import_files() {
   # Get the name of the database container
   local cid=$(docker-compose ps -q php)
 
+  local files_dir="$PROJECT_CURRENT_RELEASE_PATH/drupal/sites/default/files"
   # Copy directory to container
-  docker cp $directory/. $cid:$PROJECT_SOURCE_CONTAINER_PATH/sites/default/files
+  docker cp $directory/. $cid:$files_dir
 
-  # Give access to everyone for 'files'
-  docker exec $cid chmod -R 777 $PROJECT_SOURCE_CONTAINER_PATH/sites/default/files
+  # Set correct owner for 'files'
+  # Allow other containers to see files
+  docker exec $cid bash -c "chown -R www-data: $files_dir/ && \
+    find $files_dir/. -type d -print0 | xargs -0 chmod 0755 && \
+    find $files_dir/. -type f -print0 | xargs -0 chmod 0644"
 }
 _decompose-process-import_files_help() {
   echo "  Copies 'files' directory to the php container"
@@ -167,4 +211,4 @@ _decompose-process-import_files_help() {
 # Source project processes last to allow the project to override any environment process
 source $(_decompose-project-root)/processes
 
-# vim:syntax=sh
+# vim:syntax=sh tabstop=2 shiftwidth=2 expandtab
