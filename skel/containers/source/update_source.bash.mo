@@ -35,4 +35,9 @@ cp -f {{PROJECT_BUILD_PATH}}/docker_build_context/source/settings.php {{PROJECT_
 ln -sf /app/files/public {{PROJECT_BUILD_PATH}}/build/drupal/sites/default/files
 chmod -w {{PROJECT_BUILD_PATH}}/build/drupal/sites/default
 
+{{#DEVELOPMENT}}
+# Don't worry about chmod failing for development.
+exit 0
+{{/DEVELOPMENT}}
+
 # vim: syntax=sh
