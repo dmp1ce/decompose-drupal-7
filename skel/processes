@@ -4,5 +4,5 @@
 #  echo "custom process for 'my project'"
 #}
 #_decompose-process-project_specific_process_help() {
-#  echo "  Custom build for FTL"
+#  echo "  Custom build for 'my project'"
 #}
