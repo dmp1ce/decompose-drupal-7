@@ -1,3 +1,7 @@
 # Generated files
 /Dockerfile
 /make.bash
+/cleanup_releases.bash
+/create_release.bash
+/set_current_release.bash
+/update_source.bash
