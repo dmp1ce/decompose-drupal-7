@@ -13,7 +13,7 @@ function setup_testing_environment() {
   mkdir -p "$tmpdir/build-test-environment"
  
   # Setup build test environment
-  cp -r "$BATS_TEST_DIRNAME/../../../." "$tmpdir/build-test-environment"
+  cp -r "$BATS_TEST_DIRNAME/../../." "$tmpdir/build-test-environment"
 
   # Remove git submodules and reinitialize git because moving .git repositories
   # is problematic:

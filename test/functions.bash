@@ -28,7 +28,7 @@ function run_tests() {
 
   echo "Running BATS tests"
   echo "Drupal 7 tests"
-  $tester_image bats "/app/skel/bats/drupal-7"
+  $tester_image bats "/app/test/bats"
   local return_code+=$?
 
   #echo "Web library tests"
@@ -41,7 +41,7 @@ function run_tests() {
 function teardown_testing_environment() {
   echo "Teardown Docker testing environment ..."
   echo "DinD service"
-  testing_env_cleanup=$(docker rm -f decompose-docker-drupal7-testing)
+  testing_env_cleanup=$(docker rm -fv decompose-docker-drupal7-testing)
   [ "$?" == "1" ] && echo "$testing_env_cleanup"
 
   echo "decompose build environment"
