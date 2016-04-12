@@ -7,7 +7,7 @@
 load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
 # Production tests
-@test "'decompose build' builds containers without error" {
+@test "[production] 'decompose build' builds containers without error" {
   cd "$WORKING"
   run decompose build
 
@@ -15,7 +15,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   [ "$status" -eq 0 ]
 }
 
-@test "'decompose up' starts containers without error" {
+@test "[production] 'decompose up' starts containers without error" {
   cd "$WORKING"
   decompose --build
   run decompose up
@@ -24,7 +24,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   [ "$status" -eq 0 ]
 }
 
-@test "'docker-compose ps' shows containers up" {
+@test "[production] 'docker-compose ps' shows containers up" {
   cd "$WORKING"
   decompose --build
   run docker-compose ps
@@ -34,7 +34,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
 }
 
 # Development tests
-@test "'decompose build' builds containers without error for development" {
+@test "Switching to development mode doesn't break build" {
   cd "$WORKING"
 
   # Switch to development element
@@ -45,7 +45,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   echo "$output"
   [ "$status" -eq 0 ]
 }
-@test "'decompose up' starts containers without error for development" {
+@test "'decompose up' starts containers without error for development when switched from production" {
   cd "$WORKING"
 
   # Switch to development element
@@ -57,27 +57,13 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   echo "$output"
   [ "$status" -eq 0 ]
 }
-
-@test "Recreating project doesn't create new volumes" {
-  cd "$WORKING"
-  local volume_count=$(docker volume ls | wc -l)
-
-  decompose --build
-  decompose up
-
-  local new_volume_count=$(docker volume ls | wc -l)
-
-  [ "$volume_count" -eq "$new_volume_count" ]
-}
-
-@test "Stop project" {
+@test "[production] Stop project" {
   cd "$WORKING"
   decompose --build
   docker-compose stop
   decompose stop_nginx_proxy
 }
-
-@test "Remove project" {
+@test "[production] Remove project" {
   cd "$WORKING"
   decompose --build
   docker-compose rm -f -v

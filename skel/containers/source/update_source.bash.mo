@@ -10,7 +10,7 @@ echo "Updating source in shared build volume"
 
 mkdir -p {{PROJECT_BUILD_PATH}}/build/drupal
 rm -rf {{PROJECT_BUILD_PATH}}/build/drupal/*
-cp -r {{PROJECT_BUILD_PATH}}/docker_build_context/source/drupal/* {{PROJECT_BUILD_PATH}}/build/drupal
+cp -r {{PROJECT_BUILD_PATH}}/docker_build_context/{{PROJECT_SOURCE_PATH}}/* {{PROJECT_BUILD_PATH}}/build/drupal
 
 overrides_to_add=( 'themes' 'modules' 'libraries' )
 
@@ -24,7 +24,7 @@ done
 {{#DEVELOPMENT}}
 echo "Updating source from docker_build_context. Will NOT override files which already exist."
 echo "See decompose to force Drupal to update."
-cp -rn {{PROJECT_BUILD_PATH}}/docker_build_context/source/drupal/* {{PROJECT_BUILD_PATH}}/build/drupal
+cp -rn {{PROJECT_BUILD_PATH}}/docker_build_context/{{PROJECT_SOURCE_PATH}}/* {{PROJECT_BUILD_PATH}}/build/drupal
 {{/DEVELOPMENT}}
 
 chmod +w {{PROJECT_BUILD_PATH}}/build/drupal/sites/default
