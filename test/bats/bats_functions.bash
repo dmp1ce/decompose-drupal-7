@@ -1,7 +1,9 @@
 #!/bin/bash
 
 function echo_tmpdir() {
-  echo "$BATS_TMPDIR/$BATS_TEST_NAME"
+  # Save room in directory for uuid for saving test to view later.
+  # Max size for a filename is 255 characters. UUID is 17 characters plus '-' character.
+  echo "$BATS_TMPDIR/${BATS_TEST_NAME:0:216}"
 }
 
 function setup_testing_environment() {

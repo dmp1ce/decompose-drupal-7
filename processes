@@ -7,7 +7,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 # Declare processes
 DECOMPOSE_PROCESSES+=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
-  'export_db'
+  'export_db' 'export_files'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
   "${DECOMPOSE_BACKUP_PROCESSES[@]}" "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
 
@@ -184,6 +184,30 @@ _decompose-process-export_db() {
 _decompose-process-export_db_help() {
   echo "  Export DB to the specified filename"
   echo "  Export will append '.sql.gz' to filename."
+}
+
+_decompose-process-export_files() {
+  # Verify the the first parameter is a directory
+  local directory="$1"
+  if [ -z "$directory" ]; then
+    echo "Please specify directory to export in to."
+    exit 1
+  fi
+  if [ -d "$directory" ]; then
+    echo "Please specifiy a directory which doesn't exist"
+    exit 1
+  fi
+
+  # Get the name of the php container
+  local cid=$(docker-compose ps -q php)
+
+  # Copy files to containers current release
+  docker cp $cid:$PROJECT_RELEASES_PATH/current/drupal/sites/default/files/ $directory
+}
+_decompose-process-export_files_help() {
+  echo "  Export public files to the specified directory"
+  echo "  PARAM 1: Directory name to export files to."
+  echo "           Directory will be created."
 }
 
 _decompose-process-import_files() {
