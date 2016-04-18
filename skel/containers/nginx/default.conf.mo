@@ -24,7 +24,7 @@ server {
     log_not_found off;
     access_log off;
   }
- 
+
   # Very rarely should these ever be accessed outside of your lan
   location ~* \.(txt|log)$ {
     allow 192.168.0.0/16;

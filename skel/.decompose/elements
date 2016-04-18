@@ -1,4 +1,5 @@
 PROJECT_ENVIRONMENT="development"
+
 PROJECT_NGINX_VIRTUAL_HOST="mysite.local"
 PROJECT_NGINX_VIRTUAL_HOST_ALTS=""
 # Default nginx_proxy host
