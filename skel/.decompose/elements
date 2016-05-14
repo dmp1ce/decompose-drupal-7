@@ -21,7 +21,8 @@ PROJECT_DB_ROOT_PASSWORD="root_password_dont_use"
 # Drupal settings.
 # Use password generator to generate hash. Should be something like:
 # P6fa5zkqgLu4AqgwyFULCua76gRSlX_ksvS7q4TOOm4
-PROJECT_DRUPAL_HASH_SALT='Insert_generated_hash_here!!';
+# If empty, Drupal will fallback to using a hash of database settings.
+PROJECT_DRUPAL_HASH_SALT='';
 
 # Backup
 #PROJECT_BACKUP_GPG_KEY=""
