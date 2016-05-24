@@ -26,7 +26,7 @@ PROJECT_SENDMAIL_PATH="/usr/bin/msmtp -C /etc/msmtp_php -t"
 # Backup config
 PROJECT_BACKUP_CONFIG_NAME=$PROJECT_NGINX_VIRTUAL_HOST
 PROJECT_BACKUP_INCLUDES=""
-PROJECT_BACKUP_EXCLUDES=( '.gitmodules' 'backup_config' )
+PROJECT_BACKUP_EXCLUDES=( '.gitmodules' 'config_backup' )
 
 # PHP timezone
 PROJECT_PHP_TIMEZONE="America/New_York"
