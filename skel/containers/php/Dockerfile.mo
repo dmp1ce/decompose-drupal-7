@@ -4,6 +4,9 @@ MAINTAINER David Parrish <daveparrish@tutanota.com>
 # Use the default php.ini depending on $environment.
 RUN cp /usr/src/php/php.ini-{{PROJECT_ENVIRONMENT}} /usr/local/etc/php/php.ini
 
+# Copy check_drupal
+COPY check_drupal /opt/check_drupal
+
 # Add msmtp settings
 COPY msmtp/msmtp_php /etc/msmtp_php
 RUN chmod 600 /etc/msmtp_php && chown www-data:www-data /etc/msmtp_php && \
