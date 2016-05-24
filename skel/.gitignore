@@ -5,3 +5,4 @@
 # .decompose files
 /.decompose/elements
 /.decompose/processes
+/.decompose/skel-diff-ignore
