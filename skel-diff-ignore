@@ -14,8 +14,12 @@ containers/php/check_drupal
 containers/nginx_proxy/vhost.d/*.local
 containers/nginx_proxy/vhost.d/*.com
 containers/nginx_proxy/docker-compose-web.yml
+containers/nginx_proxy/proxy_virtual_host.key
+containers/nginx_proxy/proxy_virtual_host.dhparam.pem
+containers/nginx_proxy/proxy_virtual_host.crt
 containers/nginx/Dockerfile
 containers/nginx/default.conf
+containers/nginx/htpasswd
 containers/backup/.ssh/id_rsa*
 containers/backup/.ssh/known_hosts
 containers/backup/.duply/site_data/pre
@@ -23,4 +27,5 @@ containers/backup/.duply/site_data/*.asc
 containers/backup/.duply/site_data/conf
 containers/backup/Dockerfile
 containers/backup/backup_service
+containers/backup/public_keys/*
 backup_config
