@@ -236,7 +236,7 @@ _decompose-process-import_files_help() {
 }
 
 _decompose-process-check_drupal() {
-  docker-compose exec -T php bash -c '/opt/check_drupal/bin/check_drupal -d /app/releases/current/drupal/ -n "$(drush vget --exact site_name)" -s e -u w -e e -w w -m e'
+  docker-compose exec --user www-data -T php bash -c '/opt/check_drupal/bin/check_drupal -d /app/releases/current/drupal/ -n "$(drush vget --exact site_name)" -s e -u w -e e -w w -m e'
   return $?
 }
 _decompose-process-check_drupal_help() {
