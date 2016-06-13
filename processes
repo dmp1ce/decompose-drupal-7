@@ -95,8 +95,11 @@ chmod 777 ${PROJECT_BUILD_PATH}/build/config"
   docker-compose run --rm source ${PROJECT_BUILD_PATH}/docker_build_context/update_source.bash
   return_code=$((return_code + $?))
 
-  # Add custom build steps here
-  # docker-compose run --rm your_container your_build_command
+  # Add custom build steps to your processes file in the function: _decompose-process-custom-build-steps
+  if [ -n "$(type -t _decompose-process-custom-build-steps)" ] && [ "$(type -t _decompose-process-custom-build-steps)" = function ]; then
+    echo "Running custom build steps ..."
+    _decompose-process-custom-build-steps
+  fi
 
   echo "Running create_release.bash ..."
   docker-compose run -u root --rm source ${PROJECT_BUILD_PATH}/docker_build_context/create_release.bash
