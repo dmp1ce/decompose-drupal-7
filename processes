@@ -85,11 +85,9 @@ chmod 777 ${PROJECT_BUILD_PATH}/build/config"
     return_code=$((return_code + $?))
   fi
 
-  if [ "$DEVELOPMENT" = "true" ]; then
-    # Make the default directory if it doesn't exist
-    mkdir -p $(_decompose-project-root)/containers/source/${PROJECT_SOURCE_PATH}/sites/default
-    return_code=$((return_code + $?))
-  fi
+  echo "Making composer cache writable..."
+  docker-compose run -u root --rm source bash -c "chmod 777 /home/hostuser/.composer"
+  return_code=$((return_code + $?))
 
   echo "Running update_source.bash ..."
   docker-compose run --rm source ${PROJECT_BUILD_PATH}/docker_build_context/update_source.bash

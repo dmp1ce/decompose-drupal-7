@@ -11,14 +11,18 @@ PROJECT_NGINX_DEFAULT_HOST="mysite.local"
 PROJECT_NAMESPACE="drupal-7"
 
 # Source location constants
-PROJECT_SOURCE_PATH="source/drupal"
+PROJECT_COMPOSER_PATH="source"
+PROJECT_SOURCE_PATH="$PROJECT_COMPOSER_PATH/drupal"
 PROJECT_SOURCE_HOST_PATH="$(_decompose-project-root)/containers/source/"$PROJECT_SOURCE_PATH
 PROJECT_RELEASES_PATH="/app/releases"
 PROJECT_CURRENT_RELEASE_PATH="${PROJECT_RELEASES_PATH}/current"
 PROJECT_BUILD_PATH="/app/build"
 
 # Where to write current version information to
-PROJECT_VERSION_FILE="containers/source/$PROJECT_SOURCE_PATH/version.txt"
+PROJECT_VERSION_FILE="containers/source/$PROJECT_COMPOSER_PATH/drupal-override/version.txt"
+
+# Tell composer to update the composer.lock file and get the latest versions of modules
+PROJECT_COMPOSER_UPDATE="true"
 
 # Mail settings
 PROJECT_SENDMAIL_PATH="/usr/bin/msmtp -C /etc/msmtp_php -t"

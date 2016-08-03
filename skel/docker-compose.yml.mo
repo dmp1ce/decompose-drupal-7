@@ -41,7 +41,7 @@ db:
   restart: always
 {{/PRODUCTION}}
 drupal_cron:
-  build: containers/php
+  build: containers/php/.
   volumes_from:
     - source
     - files
@@ -58,13 +58,12 @@ drupal_cron:
 source:
   build: containers/source/.
   volumes:
+    - {{PROJECT_NAMESPACE}}_composer_cache:/home/hostuser/.composer
     - {{PROJECT_NAMESPACE}}_releases:{{PROJECT_RELEASES_PATH}}
-{{#PRODUCTION}}
     - {{PROJECT_NAMESPACE}}_build:{{PROJECT_BUILD_PATH}}/build
-{{/PRODUCTION}}
 {{#DEVELOPMENT}}
-    - {{PROJECT_SOURCE_HOST_PATH}}:{{PROJECT_BUILD_PATH}}/build/drupal
     # Uncomment to enable overrides
+    #- {{PROJECT_SOURCE_HOST_PATH}}:{{PROJECT_BUILD_PATH}}/build/drupal
     #- {{PROJECT_SOURCE_HOST_PATH}}/../modules:{{PROJECT_BUILD_PATH}}/build/drupal/sites/all/modules
     #- {{PROJECT_SOURCE_HOST_PATH}}/../themes:{{PROJECT_BUILD_PATH}}/build/drupal/sites/all/themes
     #- {{PROJECT_SOURCE_HOST_PATH}}/../libraries:{{PROJECT_BUILD_PATH}}/build/drupal/sites/all/libraries

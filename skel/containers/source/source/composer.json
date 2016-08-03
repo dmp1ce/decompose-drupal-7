@@ -1,0 +1,23 @@
+{
+  "require": { "composer/installers": "~1.0"
+             , "drupal/drupal": "7.*"
+  },
+
+  "extra": {
+    "installer-paths":
+      { "drupal": ["type:drupal-core"]
+      , "drupal/sites/all/modules/{$name}": ["type:drupal-module"]
+      , "drupal/sites/all/themes/{$name}": ["type:drupal-theme"]
+      }
+  },
+
+  "minimum-stability": "beta",
+  "prefer-stable": true,
+  
+  "repositories": {
+    "drupal": {
+      "type": "composer",
+      "url":  "https://packages.drupal.org/7"
+    }
+  }
+}

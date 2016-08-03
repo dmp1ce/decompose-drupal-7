@@ -1,16 +1,15 @@
 #!/bin/bash
 
-drupal_source_dir=$1
-if [ ! -d "$drupal_source_dir" ]; then
-  echo "Error! Drupal source directory does not exist." 
-  exit 1
-fi
+source_dir=$1
 
 # Make if make.yml exists ( and drupal does not )
-if [ -f "${drupal_source_dir}/make.yml" ] && [ ! -f "${drupal_source_dir}/index.php" ]; then
-  cd "${drupal_source_dir}"
-  chmod -f +w sites/default
-  drush make -y make.yml
+if [ -f "${source_dir}/composer.json" ] &&
+     [ ! -f "${source_dir}/drupal/index.php" ]; then
+  cd "${source_dir}"
+  composer install
+  {{#PROJECT_COMPOSER_UPDATE}}
+  composer update
+  {{/PROJECT_COMPOSER_UPDATE}}
 fi
 
 # vim: syntax=sh

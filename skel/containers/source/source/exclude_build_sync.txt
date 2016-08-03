@@ -1,0 +1,2 @@
+sites/all/modules/devel_helper
+sites/all/themes/familyhomevideos
