@@ -54,6 +54,8 @@ function setup_testing_environment() {
 }
 
 function teardown_testing_environment() {
+  # TODO: Cean up generated volumes
+
   # Directory for setting up tests
   local tmpdir=$(echo_tmpdir)
 

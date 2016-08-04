@@ -6,7 +6,7 @@
 
 load "$BATS_TEST_DIRNAME/bats_functions.bash"
 
-# Production tests
+# Development tests
 @test "[development] File import and export works" {
   cd "$WORKING"
 
