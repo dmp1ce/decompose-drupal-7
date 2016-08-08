@@ -10,10 +10,7 @@ groupadd -g {{PROJECT_HOST_GROUPID}} -o hostuser && \
 useradd -m -u {{PROJECT_HOST_USERID}} -g {{PROJECT_HOST_GROUPID}} hostuser && \
 
 # Store composer cache to prevent unnecessary downloads
-su -c 'install -dm777 /home/hostuser/.composer' hostuser && \
-
-# Setup build mount directory with full access to prevent permission issues on Travis-CI
-install -dm777 {{PROJECT_BUILD_PATH}}/build
+su -c 'install -dm777 /home/hostuser/.composer' hostuser
 
 # Copy all the source
 COPY ./ {{PROJECT_BUILD_PATH}}/docker_build_context
