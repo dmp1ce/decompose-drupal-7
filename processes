@@ -7,7 +7,7 @@ source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 # Declare processes
 DECOMPOSE_PROCESSES+=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
-  'export_db' 'export_files' 'check_drupal'
+  'export_db' 'export_files' 'check_drupal' 'cron'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
   "${DECOMPOSE_BACKUP_PROCESSES[@]}" "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
 
@@ -245,6 +245,37 @@ _decompose-process-check_drupal() {
 }
 _decompose-process-check_drupal_help() {
   echo "  Call check_drupal nagios monitoring script from within PHP container"
+}
+
+_decompose-process-cron() {
+  echo "Rebuilding the project ..."
+  decompose build
+  return_code=$((return_code + $?))
+  if [ $return_code -ne 0 ]; then
+    echo "Return code of '$return_code' detected. Stopping Cron process."
+    return $return_code
+  fi
+  echo "Restarting services ..."
+  decompose up
+  return_code=$((return_code + $?))
+  if [ $return_code -ne 0 ]; then
+    echo "Return code of '$return_code' detected. Stopping Cron process."
+    return $return_code
+  fi
+  echo "Updating Drupal database ..."
+  decompose drush -y updb
+  return_code=$((return_code + $?))
+  echo "Removing dangling Docker images ..."
+  decompose remove-dangling-docker-images
+  return_code=$((return_code + $?))
+  echo "Backing up config ..."
+  decompose backup_config
+  return_code=$((return_code + $?))
+
+  return $return_code
+}
+_decompose-process-cron_help() {
+  echo "  Run cron tasks"
 }
 
 # Source project processes last to allow the project to override any environment process
