@@ -1,2 +1,4 @@
 /drupal-override/*
 !/drupal-override/.keep
+
+settings.php
