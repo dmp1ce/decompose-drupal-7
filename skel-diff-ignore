@@ -22,9 +22,12 @@ containers/nginx/default.conf
 containers/nginx/htpasswd
 containers/backup/.ssh/id_rsa*
 containers/backup/.ssh/known_hosts
-containers/backup/.duply/site_data/pre
 containers/backup/.duply/site_data/*.asc
 containers/backup/.duply/site_data/conf
+containers/backup/.duply/site_data/exclude
+containers/backup/.duply/site_database/conf
+containers/backup/.duply/site_database/pre
+containers/backup/.duply/site_database/*.asc
 containers/backup/Dockerfile
 containers/backup/backup_service
 containers/backup/public_keys/*

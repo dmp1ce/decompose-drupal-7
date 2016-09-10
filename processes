@@ -6,8 +6,8 @@ source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 
 # Declare processes
 DECOMPOSE_PROCESSES+=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
-  'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
-  'export_db' 'export_files' 'check_drupal'
+  'tail-dev-email' 'drush' 'explore-php-container'
+  'export_db' 'export_files' 'check_drupal' 'cron'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
   "${DECOMPOSE_BACKUP_PROCESSES[@]}" "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
 
@@ -36,17 +36,6 @@ _decompose-process-explore-php-container() {
 }
 _decompose-process-explore-php-container_help() {
   echo "  Explore the php container"
-}
-
-_decompose-process-backup-db() {
-  # Get the name of the database container
-  local cid=$(docker-compose ps -q backup)
-
-  # Run backup
-  docker exec $cid duply site_data backup
-}
-_decompose-process-backup-db_help() {
-  echo "  Manually start backup process"
 }
 
 _decompose-process-tail-dev-email() {
