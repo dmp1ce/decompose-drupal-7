@@ -264,7 +264,8 @@ _decompose-process-cron() {
   fi
   echo "Updating Drupal database ..."
   decompose drush -y updb
-  return_code=$((return_code + $?))
+  # Return is sometimes 129 if there are no updates. Not useful.
+  #return_code=$((return_code + $?))
   echo "Removing dangling Docker images ..."
   decompose remove-dangling-docker-images
   return_code=$((return_code + $?))
