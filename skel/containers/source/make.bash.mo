@@ -9,6 +9,7 @@ if [ -f "${source_dir}/composer.json" ] &&
   composer install
   {{#PROJECT_COMPOSER_UPDATE}}
   composer update
+  composer update # If drupal is updated, then this update will update modules
   {{/PROJECT_COMPOSER_UPDATE}}
 fi
 
