@@ -32,6 +32,6 @@ PROJECT_BACKUP_SOURCE="/app/files"
 # Allow project elements file to override all elements
 source $(_decompose-project-root)/elements
 
-PROJECT_DECOMPOSE_DRUPAL_ENVIRONMENT_VERSION="2.0.3"
+PROJECT_DECOMPOSE_DRUPAL_ENVIRONMENT_VERSION="2.1.0"
 
 # vim:syntax=sh

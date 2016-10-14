@@ -2,9 +2,10 @@
 
 Drupal 7 Decompose environment
 
-## 2.0.3
+## 2.1.0
 
-For composer to do two updates to get the modules updates when Drupal is updated
+- Have composer do two updates to get the modules updates when Drupal is updated
+- Add process for updating `composer.lock` file
 
 ## 2.0.2
 

@@ -7,9 +7,28 @@ source $(_decompose-project-root)/.decompose/environment/lib/docker/processes
 # Declare processes
 DECOMPOSE_PROCESSES+=( 'build' 'up' 'import_db' 'explore_db' 'import_files'
   'tail-dev-email' 'drush' 'backup-db' 'explore-php-container'
-  'export_db' 'export_files' 'check_drupal' 'cron'
+  'export_db' 'export_files' 'check_drupal' 'cron' 'update-composer-lock'
   "${DECOMPOSE_WEB_PROCESSES[@]}" "${DECOMPOSE_COMMON_PROCESSES[@]}"
   "${DECOMPOSE_BACKUP_PROCESSES[@]}" "${DECOMPOSE_DOCKER_PROCESSES[@]}" )
+
+_decompose-process-update-composer-lock() {
+  echo "Updating composer.lock..."
+
+  # Run 'composer update' command
+  cid=$(docker-compose run -d \
+    source bash -c "cd /app/build/docker_build_context/source && composer update")
+  docker logs -f "$cid"
+
+  # Copy 'composer.lock' out of container
+  docker cp "$cid:/app/build/docker_build_context/source/composer.lock" \
+    "$(_decompose-project-root)/containers/source/source"
+
+  # Remove container
+  docker rm "$cid"
+}
+_decompose-process-update-composer-lock_help() {
+  echo "  Update composer.lock"
+}
 
 _decompose-process-explore_db() {
   # Get the name of the database container
