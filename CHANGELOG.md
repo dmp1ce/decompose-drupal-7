@@ -2,6 +2,10 @@
 
 Drupal 7 Decompose environment
 
+## 2.1.1
+
+- Add 'private' Drupal directory creation by default for 'source' container
+
 ## 2.1.0
 
 - Have composer do two updates to get the modules updates when Drupal is updated

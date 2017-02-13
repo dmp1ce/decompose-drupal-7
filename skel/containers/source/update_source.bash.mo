@@ -42,6 +42,7 @@ cp -f {{PROJECT_BUILD_PATH}}/docker_build_context/source/settings.php {{PROJECT_
 
 # Create files symlink
 ln -sf /app/files/public {{PROJECT_BUILD_PATH}}/build/drupal/sites/default/files
+ln -sf /app/files/private {{PROJECT_BUILD_PATH}}/build/drupal/sites/default/private
 chmod -w {{PROJECT_BUILD_PATH}}/build/drupal/sites/default
 
 {{#DEVELOPMENT}}
