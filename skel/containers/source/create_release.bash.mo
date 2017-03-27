@@ -14,3 +14,5 @@ echo "Release created a location '{{PROJECT_RELEASES_PATH}}/${timestamp}'"
 {{#DEVELOPMENT}}
 echo "Not creating a release for development."
 {{/DEVELOPMENT}}
+echo "Wait 1 second"
+sleep 1
