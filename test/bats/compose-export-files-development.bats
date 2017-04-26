@@ -53,7 +53,7 @@ load "$BATS_TEST_DIRNAME/bats_functions.bash"
   decompose stop_nginx_proxy
 }
 @test "[development] Remove project" {
-  skip "Failing on Trivis-CI only"
+  skip "Not needed because nginx_proxy is never created by the test above because it is skipped also"
   cd "$WORKING"
   decompose --build
   docker-compose rm -f -v
