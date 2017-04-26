@@ -5,6 +5,7 @@ Drupal 7 Decompose environment
 ## 2.1.1
 
 - Add 'private' Drupal directory creation by default for 'source' container
+- Minor change to `.decompose/elements` defaults for `NGINX_HOST`
 
 ## 2.1.0
 
