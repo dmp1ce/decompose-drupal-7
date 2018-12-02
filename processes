@@ -17,7 +17,8 @@ _decompose-process-update-composer-lock() {
   # Run 'composer update' command
   cid=$(docker-compose run -d \
     source bash -c "cd /app/build/docker_build_context/source && composer update")
-  docker logs -f "$cid"
+  docker wait "$cid"
+  docker logs "$cid"
 
   # Copy 'composer.lock' out of container
   docker cp "$cid:/app/build/docker_build_context/source/composer.lock" \
